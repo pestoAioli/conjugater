@@ -1,7 +1,7 @@
-defmodule SolidPhoenix.Accounts.UserToken do
+defmodule Conjugater.Accounts.UserToken do
   use Ecto.Schema
   import Ecto.Query
-  alias SolidPhoenix.Accounts.UserToken
+  alias Conjugater.Accounts.UserToken
 
   import Plug.Conn
 
@@ -20,7 +20,7 @@ defmodule SolidPhoenix.Accounts.UserToken do
     field(:user_agent, :string)
     field(:context, :string)
     field(:sent_to, :string)
-    belongs_to(:user, SolidPhoenix.Accounts.User)
+    belongs_to(:user, Conjugater.Accounts.User)
 
     timestamps(updated_at: false)
   end

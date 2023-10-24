@@ -1,7 +1,7 @@
-defmodule SolidPhoenixWeb.UserRegistrationControllerTest do
-  use SolidPhoenixWeb.ConnCase, async: true
+defmodule ConjugaterWeb.UserRegistrationControllerTest do
+  use ConjugaterWeb.ConnCase, async: true
 
-  import SolidPhoenix.AccountsFixtures
+  import Conjugater.AccountsFixtures
 
   describe "GET /users/register" do
     test "renders registration page", %{conn: conn} do

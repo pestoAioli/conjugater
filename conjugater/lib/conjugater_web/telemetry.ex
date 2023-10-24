@@ -1,4 +1,4 @@
-defmodule SolidPhoenixWeb.Telemetry do
+defmodule ConjugaterWeb.Telemetry do
   use Supervisor
   import Telemetry.Metrics
 
@@ -52,23 +52,23 @@ defmodule SolidPhoenixWeb.Telemetry do
       ),
 
       # Database Metrics
-      summary("solid_phoenix.repo.query.total_time",
+      summary("conjugater.repo.query.total_time",
         unit: {:native, :millisecond},
         description: "The sum of the other measurements"
       ),
-      summary("solid_phoenix.repo.query.decode_time",
+      summary("conjugater.repo.query.decode_time",
         unit: {:native, :millisecond},
         description: "The time spent decoding the data received from the database"
       ),
-      summary("solid_phoenix.repo.query.query_time",
+      summary("conjugater.repo.query.query_time",
         unit: {:native, :millisecond},
         description: "The time spent executing the query"
       ),
-      summary("solid_phoenix.repo.query.queue_time",
+      summary("conjugater.repo.query.queue_time",
         unit: {:native, :millisecond},
         description: "The time spent waiting for a database connection"
       ),
-      summary("solid_phoenix.repo.query.idle_time",
+      summary("conjugater.repo.query.idle_time",
         unit: {:native, :millisecond},
         description:
           "The time the connection spent waiting before being checked out for the query"
@@ -86,7 +86,7 @@ defmodule SolidPhoenixWeb.Telemetry do
     [
       # A module, function and arguments to be invoked periodically.
       # This function must call :telemetry.execute/3 and a metric must be added above.
-      # {SolidPhoenixWeb, :count_users, []}
+      # {ConjugaterWeb, :count_users, []}
     ]
   end
 end

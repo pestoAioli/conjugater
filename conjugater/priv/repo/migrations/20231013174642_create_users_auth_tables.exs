@@ -1,4 +1,4 @@
-defmodule SolidPhoenix.Repo.Migrations.CreateUsersAuthTables do
+defmodule Conjugater.Repo.Migrations.CreateUsersAuthTables do
   use Ecto.Migration
 
   def change do

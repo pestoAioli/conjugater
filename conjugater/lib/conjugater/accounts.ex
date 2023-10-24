@@ -1,12 +1,12 @@
-defmodule SolidPhoenix.Accounts do
+defmodule Conjugater.Accounts do
   @moduledoc """
   The Accounts context.
   """
 
   import Ecto.Query, warn: false
-  alias SolidPhoenix.Repo
+  alias Conjugater.Repo
 
-  alias SolidPhoenix.Accounts.{User, UserToken, UserNotifier}
+  alias Conjugater.Accounts.{User, UserToken, UserNotifier}
 
   ## Database getters
 
@@ -229,8 +229,8 @@ defmodule SolidPhoenix.Accounts do
   @doc """
   Gets the user with the given signed token.
   """
-  def get_user_by_session_token(token) do
-    {:ok, query} = UserToken.verify_session_token_query(token)
+  def get_user_by_session_token_and_agent(token, agent) do
+    {:ok, query} = UserToken.verify_session_token_and_agent_query(token, agent)
     Repo.one(query)
   end
 

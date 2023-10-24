@@ -1,12 +1,12 @@
-defmodule SolidPhoenixWeb do
+defmodule ConjugaterWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, components, channels, and so on.
 
   This can be used in your application as:
 
-      use SolidPhoenixWeb, :controller
-      use SolidPhoenixWeb, :html
+      use ConjugaterWeb, :controller
+      use ConjugaterWeb, :html
 
   The definitions below will be executed for every controller,
   component, etc, so keep them short and clean, focused
@@ -40,10 +40,10 @@ defmodule SolidPhoenixWeb do
     quote do
       use Phoenix.Controller,
         formats: [:html, :json],
-        layouts: [html: SolidPhoenixWeb.Layouts]
+        layouts: [html: ConjugaterWeb.Layouts]
 
       import Plug.Conn
-      import SolidPhoenixWeb.Gettext
+      import ConjugaterWeb.Gettext
 
       unquote(verified_routes())
     end
@@ -52,8 +52,8 @@ defmodule SolidPhoenixWeb do
   def view do
     quote do
       use Phoenix.View,
-        root: "lib/dreamshare_web/templates",
-        namespace: SolidPhoenixWeb
+        root: "lib/conjugater_web/templates",
+        namespace: ConjugaterWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
@@ -66,7 +66,7 @@ defmodule SolidPhoenixWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {SolidPhoenixWeb.Layouts, :app}
+        layout: {ConjugaterWeb.Layouts, :app}
 
       unquote(html_helpers())
     end
@@ -98,8 +98,8 @@ defmodule SolidPhoenixWeb do
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components and translation
-      import SolidPhoenixWeb.CoreComponents
-      import SolidPhoenixWeb.Gettext
+      import ConjugaterWeb.CoreComponents
+      import ConjugaterWeb.Gettext
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
@@ -112,9 +112,9 @@ defmodule SolidPhoenixWeb do
   def verified_routes do
     quote do
       use Phoenix.VerifiedRoutes,
-        endpoint: SolidPhoenixWeb.Endpoint,
-        router: SolidPhoenixWeb.Router,
-        statics: SolidPhoenixWeb.static_paths()
+        endpoint: ConjugaterWeb.Endpoint,
+        router: ConjugaterWeb.Router,
+        statics: ConjugaterWeb.static_paths()
     end
   end
 

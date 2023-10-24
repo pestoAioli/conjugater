@@ -1,14 +1,14 @@
-defmodule SolidPhoenix.Accounts.UserNotifier do
+defmodule Conjugater.Accounts.UserNotifier do
   import Swoosh.Email
 
-  alias SolidPhoenix.Mailer
+  alias Conjugater.Mailer
 
   # Delivers the email using the application mailer.
   defp deliver(recipient, subject, body) do
     email =
       new()
       |> to(recipient)
-      |> from({"SolidPhoenix", "contact@example.com"})
+      |> from({"Conjugater", "contact@example.com"})
       |> subject(subject)
       |> text_body(body)
 

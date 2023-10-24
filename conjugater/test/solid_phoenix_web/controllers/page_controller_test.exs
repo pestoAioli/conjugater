@@ -1,5 +1,5 @@
-defmodule SolidPhoenixWeb.PageControllerTest do
-  use SolidPhoenixWeb.ConnCase
+defmodule ConjugaterWeb.PageControllerTest do
+  use ConjugaterWeb.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get(conn, ~p"/")

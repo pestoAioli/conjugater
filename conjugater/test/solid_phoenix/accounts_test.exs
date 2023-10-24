@@ -1,10 +1,10 @@
-defmodule SolidPhoenix.AccountsTest do
-  use SolidPhoenix.DataCase
+defmodule Conjugater.AccountsTest do
+  use Conjugater.DataCase
 
-  alias SolidPhoenix.Accounts
+  alias Conjugater.Accounts
 
-  import SolidPhoenix.AccountsFixtures
-  alias SolidPhoenix.Accounts.{User, UserToken}
+  import Conjugater.AccountsFixtures
+  alias Conjugater.Accounts.{User, UserToken}
 
   describe "get_user_by_email/1" do
     test "does not return the user if the email does not exist" do

@@ -7,19 +7,19 @@
 # General application configuration
 import Config
 
-config :solid_phoenix,
-  ecto_repos: [SolidPhoenix.Repo],
+config :conjugater,
+  ecto_repos: [Conjugater.Repo],
   generators: [timestamp_type: :utc_datetime]
 
 # Configures the endpoint
-config :solid_phoenix, SolidPhoenixWeb.Endpoint,
+config :conjugater, ConjugaterWeb.Endpoint,
   url: [host: "localhost"],
   adapter: Phoenix.Endpoint.Cowboy2Adapter,
   render_errors: [
-    formats: [html: SolidPhoenixWeb.ErrorHTML, json: SolidPhoenixWeb.ErrorJSON],
+    formats: [html: ConjugaterWeb.ErrorHTML, json: ConjugaterWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: SolidPhoenix.PubSub,
+  pubsub_server: Conjugater.PubSub,
   live_view: [signing_salt: "b5BGDrrE"]
 
 # Configures the mailer
@@ -29,7 +29,7 @@ config :solid_phoenix, SolidPhoenixWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :solid_phoenix, SolidPhoenix.Mailer, adapter: Swoosh.Adapters.Local
+config :conjugater, Conjugater.Mailer, adapter: Swoosh.Adapters.Local
 
 # Configures Elixir's Logger
 config :logger, :console,

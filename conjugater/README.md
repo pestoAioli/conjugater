@@ -1,4 +1,4 @@
-# SolidPhoenix
+# Conjugater
 
 To start your Phoenix server:
 
