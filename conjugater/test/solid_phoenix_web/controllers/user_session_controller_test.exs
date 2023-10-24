@@ -1,7 +1,7 @@
-defmodule SolidPhoenixWeb.UserSessionControllerTest do
-  use SolidPhoenixWeb.ConnCase, async: true
+defmodule ConjugaterWeb.UserSessionControllerTest do
+  use ConjugaterWeb.ConnCase, async: true
 
-  import SolidPhoenix.AccountsFixtures
+  import Conjugater.AccountsFixtures
 
   setup do
     %{user: user_fixture()}
@@ -50,7 +50,7 @@ defmodule SolidPhoenixWeb.UserSessionControllerTest do
           }
         })
 
-      assert conn.resp_cookies["_solid_phoenix_web_user_remember_me"]
+      assert conn.resp_cookies["_conjugater_web_user_remember_me"]
       assert redirected_to(conn) == ~p"/"
     end
 

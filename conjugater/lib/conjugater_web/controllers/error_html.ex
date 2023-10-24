@@ -1,12 +1,12 @@
-defmodule SolidPhoenixWeb.ErrorHTML do
-  use SolidPhoenixWeb, :html
+defmodule ConjugaterWeb.ErrorHTML do
+  use ConjugaterWeb, :html
 
   # If you want to customize your error pages,
   # uncomment the embed_templates/1 call below
   # and add pages to the error directory:
   #
-  #   * lib/solid_phoenix_web/controllers/error_html/404.html.heex
-  #   * lib/solid_phoenix_web/controllers/error_html/500.html.heex
+  #   * lib/conjugater_web/controllers/error_html/404.html.heex
+  #   * lib/conjugater_web/controllers/error_html/500.html.heex
   #
   # embed_templates "error_html/*"
 

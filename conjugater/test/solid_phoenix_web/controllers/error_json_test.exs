@@ -1,12 +1,12 @@
-defmodule SolidPhoenixWeb.ErrorJSONTest do
-  use SolidPhoenixWeb.ConnCase, async: true
+defmodule ConjugaterWeb.ErrorJSONTest do
+  use ConjugaterWeb.ConnCase, async: true
 
   test "renders 404" do
-    assert SolidPhoenixWeb.ErrorJSON.render("404.json", %{}) == %{errors: %{detail: "Not Found"}}
+    assert ConjugaterWeb.ErrorJSON.render("404.json", %{}) == %{errors: %{detail: "Not Found"}}
   end
 
   test "renders 500" do
-    assert SolidPhoenixWeb.ErrorJSON.render("500.json", %{}) ==
+    assert ConjugaterWeb.ErrorJSON.render("500.json", %{}) ==
              %{errors: %{detail: "Internal Server Error"}}
   end
 end

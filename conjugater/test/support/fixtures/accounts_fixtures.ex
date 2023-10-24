@@ -1,7 +1,7 @@
-defmodule SolidPhoenix.AccountsFixtures do
+defmodule Conjugater.AccountsFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `SolidPhoenix.Accounts` context.
+  entities via the `Conjugater.Accounts` context.
   """
 
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
@@ -18,7 +18,7 @@ defmodule SolidPhoenix.AccountsFixtures do
     {:ok, user} =
       attrs
       |> valid_user_attributes()
-      |> SolidPhoenix.Accounts.register_user()
+      |> Conjugater.Accounts.register_user()
 
     user
   end

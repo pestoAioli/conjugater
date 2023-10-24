@@ -1,9 +1,9 @@
-defmodule SolidPhoenixWeb.UserResetPasswordControllerTest do
-  use SolidPhoenixWeb.ConnCase, async: true
+defmodule ConjugaterWeb.UserResetPasswordControllerTest do
+  use ConjugaterWeb.ConnCase, async: true
 
-  alias SolidPhoenix.Accounts
-  alias SolidPhoenix.Repo
-  import SolidPhoenix.AccountsFixtures
+  alias Conjugater.Accounts
+  alias Conjugater.Repo
+  import Conjugater.AccountsFixtures
 
   setup do
     %{user: user_fixture()}

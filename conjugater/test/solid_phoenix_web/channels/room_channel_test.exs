@@ -1,11 +1,11 @@
-defmodule SolidPhoenixWeb.RoomChannelTest do
-  use SolidPhoenixWeb.ChannelCase
+defmodule ConjugaterWeb.RoomChannelTest do
+  use ConjugaterWeb.ChannelCase
 
   setup do
     {:ok, _, socket} =
-      SolidPhoenixWeb.UserSocket
+      ConjugaterWeb.UserSocket
       |> socket("user_id", %{some: :assign})
-      |> subscribe_and_join(SolidPhoenixWeb.RoomChannel, "room:lobby")
+      |> subscribe_and_join(ConjugaterWeb.RoomChannel, "room:lobby")
 
     %{socket: socket}
   end

@@ -1,8 +1,8 @@
-defmodule SolidPhoenixWeb.UserSettingsControllerTest do
-  use SolidPhoenixWeb.ConnCase, async: true
+defmodule ConjugaterWeb.UserSettingsControllerTest do
+  use ConjugaterWeb.ConnCase, async: true
 
-  alias SolidPhoenix.Accounts
-  import SolidPhoenix.AccountsFixtures
+  alias Conjugater.Accounts
+  import Conjugater.AccountsFixtures
 
   setup :register_and_log_in_user
 

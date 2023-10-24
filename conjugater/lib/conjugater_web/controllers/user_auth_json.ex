@@ -1,6 +1,6 @@
-defmodule SolidPhoenixWeb.UserAuthJSON do
-  use SolidPhoenixWeb, :view
-  alias SolidPhoenixWeb.UserAuthJSON
+defmodule ConjugaterWeb.UserAuthJSON do
+  use ConjugaterWeb, :view
+  alias ConjugaterWeb.UserAuthJSON
 
   def render("index.json", %{user: user}) do
     %{data: render_one(user, UserAuthJSON, "privileged_user.json", as: :user)}

@@ -1,5 +1,5 @@
-defmodule SolidPhoenixWeb.RoomChannel do
-  use SolidPhoenixWeb, :channel
+defmodule ConjugaterWeb.RoomChannel do
+  use ConjugaterWeb, :channel
 
   @impl true
   def join("room:lobby", _payload, socket) do

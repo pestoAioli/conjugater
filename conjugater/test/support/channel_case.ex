@@ -1,4 +1,4 @@
-defmodule SolidPhoenixWeb.ChannelCase do
+defmodule ConjugaterWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -11,7 +11,7 @@ defmodule SolidPhoenixWeb.ChannelCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use SolidPhoenixWeb.ChannelCase, async: true`, although
+  by setting `use ConjugaterWeb.ChannelCase, async: true`, although
   this option is not recommended for other databases.
   """
 
@@ -21,15 +21,15 @@ defmodule SolidPhoenixWeb.ChannelCase do
     quote do
       # Import conveniences for testing with channels
       import Phoenix.ChannelTest
-      import SolidPhoenixWeb.ChannelCase
+      import ConjugaterWeb.ChannelCase
 
       # The default endpoint for testing
-      @endpoint SolidPhoenixWeb.Endpoint
+      @endpoint ConjugaterWeb.Endpoint
     end
   end
 
   setup tags do
-    SolidPhoenix.DataCase.setup_sandbox(tags)
+    Conjugater.DataCase.setup_sandbox(tags)
     :ok
   end
 end

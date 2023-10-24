@@ -1,7 +1,7 @@
-defmodule SolidPhoenixWeb.Router do
-  use SolidPhoenixWeb, :router
+defmodule ConjugaterWeb.Router do
+  use ConjugaterWeb, :router
 
-  import SolidPhoenixWeb.UserAuth
+  import ConjugaterWeb.UserAuth
 
   pipeline :browser do
     plug(:accepts, ["json"])
@@ -12,7 +12,7 @@ defmodule SolidPhoenixWeb.Router do
     plug(:fetch_current_user)
   end
 
-  scope "/", SolidPhoenixWeb do
+  scope "/", ConjugaterWeb do
     pipe_through(:browser)
 
     post("/user/register", UserAuthController, :register)
@@ -20,12 +20,12 @@ defmodule SolidPhoenixWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", SolidPhoenixWeb do
+  # scope "/api", ConjugaterWeb do
   #   pipe_through :api
   # end
 
   # Enable Swoosh mailbox preview in development
-  if Application.compile_env(:solid_phoenix, :dev_routes) do
+  if Application.compile_env(:conjugater, :dev_routes) do
     scope "/dev" do
       pipe_through(:browser)
 
@@ -35,7 +35,7 @@ defmodule SolidPhoenixWeb.Router do
 
   ## Authentication routes
 
-  scope "/api", SolidPhoenixWeb do
+  scope "/api", ConjugaterWeb do
     pipe_through([:api])
 
     get("/user", UserAuthController, :index)

@@ -1,4 +1,4 @@
-defmodule SolidPhoenix.Application do
+defmodule Conjugater.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -8,21 +8,21 @@ defmodule SolidPhoenix.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      SolidPhoenixWeb.Telemetry,
-      SolidPhoenix.Repo,
-      {DNSCluster, query: Application.get_env(:solid_phoenix, :dns_cluster_query) || :ignore},
-      {Phoenix.PubSub, name: SolidPhoenix.PubSub},
+      ConjugaterWeb.Telemetry,
+      Conjugater.Repo,
+      {DNSCluster, query: Application.get_env(:conjugater, :dns_cluster_query) || :ignore},
+      {Phoenix.PubSub, name: Conjugater.PubSub},
       # Start the Finch HTTP client for sending emails
-      {Finch, name: SolidPhoenix.Finch},
-      # Start a worker by calling: SolidPhoenix.Worker.start_link(arg)
-      # {SolidPhoenix.Worker, arg},
+      {Finch, name: Conjugater.Finch},
+      # Start a worker by calling: Conjugater.Worker.start_link(arg)
+      # {Conjugater.Worker, arg},
       # Start to serve requests, typically the last entry
-      SolidPhoenixWeb.Endpoint
+      ConjugaterWeb.Endpoint
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: SolidPhoenix.Supervisor]
+    opts = [strategy: :one_for_one, name: Conjugater.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
@@ -30,7 +30,7 @@ defmodule SolidPhoenix.Application do
   # whenever the application is updated.
   @impl true
   def config_change(changed, _new, removed) do
-    SolidPhoenixWeb.Endpoint.config_change(changed, removed)
+    ConjugaterWeb.Endpoint.config_change(changed, removed)
     :ok
   end
 end

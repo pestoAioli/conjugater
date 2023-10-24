@@ -1,18 +1,18 @@
-defmodule SolidPhoenixWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :solid_phoenix
+defmodule ConjugaterWeb.Endpoint do
+  use Phoenix.Endpoint, otp_app: :conjugater
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
-    key: "_solid_phoenix_key",
+    key: "_conjugater_key",
     signing_salt: "PJyJQjzL",
     same_site: "Lax"
   ]
 
   # socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
-  socket("/socket", SolidPhoenixWeb.UserSocket,
+  socket("/socket", ConjugaterWeb.UserSocket,
     websocket: true,
     longpoll: false
   )
@@ -25,9 +25,9 @@ defmodule SolidPhoenixWeb.Endpoint do
   # when deploying your static files in production.
   plug(Plug.Static,
     at: "/",
-    from: :solid_phoenix,
+    from: :conjugater,
     gzip: false,
-    only: SolidPhoenixWeb.static_paths()
+    only: ConjugaterWeb.static_paths()
   )
 
   # Code reloading can be explicitly enabled under the
@@ -36,7 +36,7 @@ defmodule SolidPhoenixWeb.Endpoint do
     socket("/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket)
     plug(Phoenix.LiveReloader)
     plug(Phoenix.CodeReloader)
-    plug(Phoenix.Ecto.CheckRepoStatus, otp_app: :solid_phoenix)
+    plug(Phoenix.Ecto.CheckRepoStatus, otp_app: :conjugater)
   end
 
   plug(Plug.RequestId)
@@ -51,5 +51,5 @@ defmodule SolidPhoenixWeb.Endpoint do
   plug(Plug.MethodOverride)
   plug(Plug.Head)
   plug(Plug.Session, @session_options)
-  plug(SolidPhoenixWeb.Router)
+  plug(ConjugaterWeb.Router)
 end

@@ -1,9 +1,9 @@
-defmodule SolidPhoenixWeb.UserAuthController do
-  use SolidPhoenixWeb, :controller
+defmodule ConjugaterWeb.UserAuthController do
+  use ConjugaterWeb, :controller
 
-  alias SolidPhoenix.Accounts
-  alias SolidPhoenix.Repo
-  import SolidPhoenixWeb.UserAuth
+  alias Conjugater.Accounts
+  alias Conjugater.Repo
+  import ConjugaterWeb.UserAuth
 
   plug :require_authenticated_user when action in [:index, :update]
   plug :get_user_by_reset_password_token when action in [:reset_password]
@@ -78,14 +78,14 @@ defmodule SolidPhoenixWeb.UserAuthController do
       else
         conn
         |> put_status(401)
-        |> put_view(SolidPhoenixWeb.ErrorJSON)
+        |> put_view(ConjugaterWeb.ErrorJSON)
         |> render(:"401")
         |> halt()
       end
     else
       conn
       |> put_status(401)
-      |> put_view(SolidPhoenixWeb.ErrorJSON)
+      |> put_view(ConjugaterWeb.ErrorJSON)
       |> render(:"401")
       |> halt()
     end
