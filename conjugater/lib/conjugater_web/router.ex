@@ -45,5 +45,7 @@ defmodule ConjugaterWeb.Router do
     post("/user/reset_password", UserAuthController, :reset_password)
     # TODO: implement forgot_password functionality
     # post "/user/forgot_password", UserAuthController, :forgot_password
+    get "/exercise", ExerciseController, :index
+    post "/exercise", ExerciseController, :create
   end
 end
