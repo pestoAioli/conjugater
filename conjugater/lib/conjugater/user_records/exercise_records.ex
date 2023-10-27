@@ -8,7 +8,8 @@ defmodule Conjugater.UserRecords.ExerciseRecords do
     field :type, :string
     field :weight, :integer
     field :user_id, :id
-    field :exercise_id, :id
+    field :notes, :string
+    field :exercise, :string
 
     timestamps(type: :utc_datetime)
   end
@@ -16,7 +17,7 @@ defmodule Conjugater.UserRecords.ExerciseRecords do
   @doc false
   def changeset(exercise_records, attrs) do
     exercise_records
-    |> cast(attrs, [:type, :weight, :reps, :sets])
-    |> validate_required([:type, :weight, :reps, :sets])
+    |> cast(attrs, [:type, :weight, :reps, :sets, :notes, :exercise])
+    |> validate_required([:type, :weight, :reps, :sets, :exercise])
   end
 end

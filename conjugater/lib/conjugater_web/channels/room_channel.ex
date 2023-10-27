@@ -18,7 +18,7 @@ defmodule ConjugaterWeb.RoomChannel do
         }
       end)
 
-    push(socket, "list_my_data", %{exercises: exercises})
+    push(socket, "list_exercise_names", %{exercises: exercises})
 
     {:noreply, socket}
   end
