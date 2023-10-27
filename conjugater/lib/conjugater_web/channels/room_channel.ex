@@ -9,8 +9,18 @@ defmodule ConjugaterWeb.RoomChannel do
   # Channels can be used in a request/response fashion
   # by sending replies to requests from the client
   @impl true
-  def handle_in("ping", payload, socket) do
-    {:reply, {:ok, payload}, socket}
+  def handle_in("joined_my_feed", _payload, socket) do
+    exercises =
+      Conjugater.Exercises.list_exercises()
+      |> Enum.map(fn exercise ->
+        %{
+          name: exercise.name
+        }
+      end)
+
+    push(socket, "list_my_data", %{exercises: exercises})
+
+    {:noreply, socket}
   end
 
   # It is also common to receive messages from the client and
@@ -21,8 +31,14 @@ defmodule ConjugaterWeb.RoomChannel do
     {:noreply, socket}
   end
 
-  # Add authorization logic here as required.
-  defp authorized?(_payload) do
-    true
+  @impl true
+  def handle_info({:exercise_added, exercise}, socket) do
+    IO.inspect(exercise)
+
+    push(socket, "exercise_added", %{
+      name: exercise.name
+    })
+
+    {:noreply, socket}
   end
 end
