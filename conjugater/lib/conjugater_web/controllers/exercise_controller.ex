@@ -12,16 +12,10 @@ defmodule ConjugaterWeb.ExerciseController do
   end
 
   def create(conn, %{"exercise" => exercise_params}) do
-    user = conn.assigns[:current_user]
-
-    if user do
-      with {:ok, %Exercise{} = exercise} <- Exercises.create_exercise(exercise_params) do
-        conn
-        |> put_status(:created)
-        |> render(:show, exercise: exercise)
-      end
-    else
-      {:error, :unauthorized}
+    with {:ok, %Exercise{} = exercise} <- Exercises.create_exercise(exercise_params) do
+      conn
+      |> put_status(:created)
+      |> render(:show, exercise: exercise)
     end
   end
 

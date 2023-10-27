@@ -7,3 +7,6 @@ interface HTMLInputElementSignUp extends EventTarget {
   password: { value: string };
   username: { value: string };
 }
+interface HTMLInputElementAddExercise extends EventTarget {
+  exercise: { value: string }
+}

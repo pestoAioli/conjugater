@@ -53,6 +53,7 @@ defmodule Conjugater.Exercises do
     %Exercise{}
     |> Exercise.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:exercise_added)
   end
 
   @doc """
@@ -100,5 +101,16 @@ defmodule Conjugater.Exercises do
   """
   def change_exercise(%Exercise{} = exercise, attrs \\ %{}) do
     Exercise.changeset(exercise, attrs)
+  end
+
+  def subscribe do
+    Phoenix.PubSub.subscribe(Conjugater.PubSub, "room:lobby")
+  end
+
+  defp broadcast({:error, _reason} = error, _event), do: error
+
+  defp broadcast({:ok, payload}, event) do
+    Phoenix.PubSub.broadcast(Conjugater.PubSub, "room:lobby", {event, payload})
+    {:ok, payload}
   end
 end
