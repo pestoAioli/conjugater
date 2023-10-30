@@ -47,5 +47,7 @@ defmodule ConjugaterWeb.Router do
     # post "/user/forgot_password", UserAuthController, :forgot_password
     get "/exercise", ExerciseController, :index
     post "/exercise", ExerciseController, :create
+    get "/exercise_record", ExerciseRecordsController, :index
+    post "/exercise_record", ExerciseRecordsController, :create
   end
 end

@@ -2,6 +2,7 @@ import { createSignal, type Component, createEffect, Show, For } from "solid-js"
 import { useAuth } from "../contexts/auth-context-provider";
 import { useSocket } from "../contexts/socket-context-provider";
 import moment from "moment";
+import { NewAccessory } from "../components/new-accessory";
 
 export const UserData: Component = () => {
   const [token, _setToken] = useAuth();
@@ -10,8 +11,8 @@ export const UserData: Component = () => {
   const [date, setDate] = createSignal(moment().format('LL'));
   const [workoutFound, setWorkoutFound] = createSignal(false);
   const [exerciseNames, setExerciseNames] = createSignal<string[]>([]);
-  const [maybeMainExercise, setMaybeMainExercise] = createSignal(true);
-  const noMainExercise = document.getElementById('none') as HTMLInputElement;
+  const [maybeMainExercise, setMaybeMainExercise] = createSignal('');
+  const [numAccessory, setNumAccessory] = createSignal([0]);
 
   if (socket) {
     console.log("socket connected")
@@ -35,11 +36,6 @@ export const UserData: Component = () => {
       socket.push("find_workout_by_date", {})
     }
   })
-  createEffect(() => {
-    if (noMainExercise.checked) {
-      setMaybeMainExercise(false);
-    }
-  })
 
   async function addExercise(exerciseName: string) {
     try {
@@ -60,27 +56,25 @@ export const UserData: Component = () => {
     }
 
   }
+  let exercise_records = {};
 
   async function addExerciseRecord(e: SubmitEvent) {
     e.preventDefault();
     setAddingExercise(true);
     try {
-      const target = e.target as HTMLInputElementAddExerciseRecord;
-      const type = target.type.value;
-      const weight = target.weight.value;
-      const reps = target.reps.value;
-      const sets = target.sets.value;
-      const exercise = target.exercise.value;
-      const notes = target.notes.value;
-      if (!exerciseNames().includes(exercise)) {
-        addExercise(exercise);
+      // const target = e.target as HTMLInputElementAddExerciseRecord;
+      console.log(e.target);
+      const target = e.target;
+      //@ts-ignore
+      for (let i = 0; i < target.length; i++) {
+        //@ts-ignore
+        exercise_records[e.target.elements[i].getAttribute("name")] = target.elements[i].value;
       }
-      const response = await fetch(import.meta.env.VITE_NEW_EXERCISE_URL, {
+      console.log(exercise_records, "form");
+      const response = await fetch(import.meta.env.VITE_NEW_EXERCISE_RECORD_URL, {
         method: "POST",
         body: JSON.stringify({
-          exercise_records: {
-            name: exercise
-          }
+          exercise_records
         }),
         mode: 'cors',
         headers: {
@@ -119,24 +113,53 @@ export const UserData: Component = () => {
         <i style={{ "margin": "8px" }}>No exercises have been logged for this day!</i>
         <b style={{ "margin-bottom": "8px" }}>New workout:</b>
         <form onSubmit={addExerciseRecord} style={{ "display": "flex", "flex-direction": "column" }}>
+          <p style={{ "margin-top": "0px", "margin-bottom": "4px", "align-self": "center" }}>Add a main exercise:</p>
           <div style={{ "margin-bottom": "4px" }}>
-            <p style={{ "margin-top": "0px", "margin-bottom": "4px" }}>Add a main exercise:</p>
-            <input type="radio" id="max" name="type" value="max" />
+            <input type="radio" id="max" name="main-exercise-type" value="max" onClick={() => setMaybeMainExercise('max')} />
             <label for="max">max</label>
-            <input type="radio" id="speed" name="type" value="speed" />
+            <input type="radio" id="speed" name="main-exercise-type" value="speed" onClick={() => setMaybeMainExercise('speed')} />
             <label for="speed">speed</label>
-            <input type="radio" id="none" name="type" value="none" />
+            <input type="radio" id="none" name="main-exercise-type" value="none" checked onClick={() => setMaybeMainExercise('none')} />
             <label for="none">none</label>
           </div>
-          <label for="main-exercise">main exercise name:</label>
-          <input type="search" list="exercise-names" id="main-exercise" name="main-exercise" required />
+          <Show when={maybeMainExercise() == 'none'}>
+          </Show>
+          <Show when={maybeMainExercise() == 'max'}>
+            <label for="main-exercise">main exercise name:</label>
+            <input type="search" list="exercise-names" id="main-exercise" name="main-exercise" required />
+            <label for="main-exercise-weight">main exercise weight (1rm):</label>
+            <input type="number" id="main-exercise-weight" name="main-exercise-weight" required />
+            <label for="main-exercise-notes">notes:</label>
+            <textarea id="main-exercise-notes" name="main-exercise-notes" required />
+          </Show>
+          <Show when={maybeMainExercise() == 'speed'}>
+            <label for="main-exercise">main exercise name:</label>
+            <input type="search" list="exercise-names" id="main-exercise" name="main-exercise" required />
+            <label for="main-exercise-weight">main exercise weight:</label>
+            <input type="number" id="main-exercise-weight" name="main-exercise-weight" required />
+            <label for="main-exercise-sets">main exercise sets:</label>
+            <input type="number" id="main-exercise-sets" name="main-exercise-sets" required />
+            <label for="main-exercise-reps">main exercise reps:</label>
+            <input type="number" id="main-exercise-reps" name="main-exercise-reps" required />
+            <label for="main-exercise-notes">notes:</label>
+            <textarea id="main-exercise-notes" name="main-exercise-notes" required />
+          </Show>
+          <button type="button" onClick={() => numAccessory()[0] == 0 ? setNumAccessory([1]) : setNumAccessory(prev => [...prev, prev[prev.length - 1] + 1])}>
+            Add accessory exercise
+          </button>
+          <For each={numAccessory()}>{(accessory) =>
+            <>
+              <Show when={accessory == 0}>
+              </Show>
+              <Show when={accessory != 0}>
+                <NewAccessory accessoryId={accessory} list={"exercise-names"} />
+              </Show>
+            </>
+          }
+          </For>
           <button type="submit">save</button>
         </form>
       </Show>
-
-      <form>
-
-      </form>
     </div>
   )
 }
