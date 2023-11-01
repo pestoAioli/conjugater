@@ -57,6 +57,7 @@ export const UserData: Component = () => {
 
   }
   let exercise_records = {};
+  let objectOfObjects = {};
 
   async function addExerciseRecord(e: SubmitEvent) {
     e.preventDefault();
@@ -71,6 +72,12 @@ export const UserData: Component = () => {
         exercise_records[e.target.elements[i].getAttribute("name")] = target.elements[i].value;
       }
       console.log(exercise_records, "form");
+      for (const [key, value] of Object.entries(exercise_records)) {
+        let counter = 1;
+        if (key.split("-")[0] == "accessory") {
+          console.log(key, "this works")
+        }
+      }
       const response = await fetch(import.meta.env.VITE_NEW_EXERCISE_RECORD_URL, {
         method: "POST",
         body: JSON.stringify({

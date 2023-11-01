@@ -18,6 +18,7 @@ defmodule ConjugaterWeb.ExerciseRecordsController do
     |> Enum.map(fn {k, v} ->
       list = String.split(k, "-")
       IO.inspect(list)
+      IO.inspect(["accessory" | tail] = list)
     end)
 
     with {:ok, %ExerciseRecords{} = exercise_records} <-
