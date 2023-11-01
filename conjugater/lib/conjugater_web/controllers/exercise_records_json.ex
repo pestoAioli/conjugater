@@ -21,7 +21,8 @@ defmodule ConjugaterWeb.ExerciseRecordsJSON do
       type: exercise_records.type,
       weight: exercise_records.weight,
       reps: exercise_records.reps,
-      sets: exercise_records.sets
+      sets: exercise_records.sets,
+      notes: exercise_records.notes
     }
   end
 end

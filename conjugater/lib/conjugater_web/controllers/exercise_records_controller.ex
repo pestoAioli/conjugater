@@ -12,6 +12,14 @@ defmodule ConjugaterWeb.ExerciseRecordsController do
   end
 
   def create(conn, %{"exercise_records" => exercise_records_params}) do
+    IO.inspect(exercise_records_params)
+
+    exercise_records_params
+    |> Enum.map(fn {k, v} ->
+      list = String.split(k, "-")
+      IO.inspect(list)
+    end)
+
     with {:ok, %ExerciseRecords{} = exercise_records} <-
            UserRecords.create_exercise_records(exercise_records_params) do
       conn
