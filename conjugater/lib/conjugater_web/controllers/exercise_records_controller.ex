@@ -12,19 +12,18 @@ defmodule ConjugaterWeb.ExerciseRecordsController do
   end
 
   def create(conn, %{"exercise_records" => exercise_records_params}) do
-    IO.inspect(exercise_records_params)
+    user = conn.assigns[:current_user]
+    IO.inspect(user)
 
-    exercise_records_params
-    |> Enum.map(fn {k, v} ->
-      list = String.split(k, "-")
-      IO.inspect(list)
-    end)
+    if user do
+      with {:ok, %ExerciseRecords{} = exercise_records} <-
+             UserRecords.create_exercise_records(user.id, exercise_records_params) do
+        IO.inspect(exercise_records_params)
 
-    with {:ok, %ExerciseRecords{} = exercise_records} <-
-           UserRecords.create_exercise_records(exercise_records_params) do
-      conn
-      |> put_status(:created)
-      |> render(:show, exercise_records: exercise_records)
+        conn
+        |> put_status(:created)
+        |> render(:show, exercise_records: exercise_records)
+      end
     end
   end
 
@@ -48,5 +47,8 @@ defmodule ConjugaterWeb.ExerciseRecordsController do
     with {:ok, %ExerciseRecords{}} <- UserRecords.delete_exercise_records(exercise_records) do
       send_resp(conn, :no_content, "")
     end
+  end
+
+  defp make_single_entry() do
   end
 end

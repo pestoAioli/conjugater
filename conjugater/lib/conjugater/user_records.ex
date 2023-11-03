@@ -49,8 +49,8 @@ defmodule Conjugater.UserRecords do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_exercise_records(attrs \\ %{}) do
-    %ExerciseRecords{}
+  def create_exercise_records(user_id, attrs \\ %{}) do
+    %ExerciseRecords{user_id: user_id}
     |> ExerciseRecords.changeset(attrs)
     |> Repo.insert()
   end

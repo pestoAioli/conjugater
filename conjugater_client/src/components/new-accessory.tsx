@@ -5,10 +5,10 @@ export const NewAccessory: Component<{ accessoryId: number, list: string }> = ({
   return (
     <>
       <p>Accesory #{accessoryId}</p>
-      <label for={`accesory-name-${accessoryId}`}>name of exercise: </label>
-      <input type="search" list={list} name={`accesory-name-${accessoryId}`} id={`accesory-name-1${accessoryId}`} />
+      <label for={`accessory-exercise-${accessoryId}`}>name of exercise: </label>
+      <input type="search" list={list} name={`accessory-exercise-${accessoryId}`} id={`accessory-exercise-${accessoryId}`} />
       <label for={`accessory-reps-${accessoryId}`}>reps: </label>
-      <input type="number" name={`accesory-reps-${accessoryId}`} id={`accessory-reps-${accessoryId}`} />
+      <input type="number" name={`accessory-reps-${accessoryId}`} id={`accessory-reps-${accessoryId}`} />
       <label for={`accessory-sets-${accessoryId}`}>sets: </label>
       <input type="number" name={`accessory-sets-${accessoryId}`} id={`accessory-sets-${accessoryId}`} />
       <label for={`accessory-weight-${accessoryId}`}>weight: </label>
