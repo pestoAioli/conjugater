@@ -23,11 +23,31 @@ defmodule ConjugaterWeb.RoomChannel do
     {:noreply, socket}
   end
 
-  # It is also common to receive messages from the client and
-  # broadcast to everyone in the current topic (room:lobby).
   @impl true
-  def handle_in("shout", payload, socket) do
-    broadcast(socket, "shout", payload)
+  def handle_in("find_workout_by_date", payload, socket) do
+    IO.inspect(payload)
+
+    exercise_records =
+      Conjugater.UserRecords.list_exercise_records()
+      |> Enum.filter(fn record ->
+        record.date == payload["date"]
+      end)
+      |> Enum.map(fn record ->
+        %{
+          exercise: record.exercise,
+          type: record.type,
+          weight: record.weight,
+          reps: record.reps,
+          sets: record.sets,
+          notes: record.notes,
+          user_id: record.user_id
+        }
+      end)
+
+    if length(exercise_records) > 0 do
+      push(socket, "found_workout_by_date", %{exercise_records: exercise_records})
+    end
+
     {:noreply, socket}
   end
 
