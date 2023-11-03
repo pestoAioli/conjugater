@@ -18,6 +18,6 @@ defmodule Conjugater.UserRecords.ExerciseRecords do
   def changeset(exercise_records, attrs) do
     exercise_records
     |> cast(attrs, [:type, :weight, :reps, :sets, :notes, :exercise])
-    |> validate_required([:type, :weight, :reps, :sets, :exercise])
+    |> validate_required([:weight, :exercise])
   end
 end

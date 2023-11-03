@@ -57,7 +57,8 @@ export const UserData: Component = () => {
 
   }
   let exercise_records = {};
-  let objectOfObjects = {};
+  let payload: any = {};
+  let counter = 1;
 
   async function addExerciseRecord(e: SubmitEvent) {
     e.preventDefault();
@@ -69,29 +70,55 @@ export const UserData: Component = () => {
       //@ts-ignore
       for (let i = 0; i < target.length; i++) {
         //@ts-ignore
-        exercise_records[e.target.elements[i].getAttribute("name")] = target.elements[i].value;
+        if (e.target.elements[i].getAttribute("name") == "main-exercise-type") {
+          //@ts-ignore
+          if (e.target.elements[i].checked) {
+            //@ts-ignore
+            exercise_records[e.target.elements[i].getAttribute("name")] = target.elements[i].value;
+          }
+        } else {
+          //@ts-ignore
+          exercise_records[e.target.elements[i].getAttribute("name")] = target.elements[i].value;
+        }
       }
       console.log(exercise_records, "form");
       for (const [key, value] of Object.entries(exercise_records)) {
-        let counter = 1;
         if (key.split("-")[0] == "accessory") {
-          console.log(key, "this works")
+          if (!payload[counter]) payload[counter] = {};
+          if (Number(key.split("-")[2]) == counter) {
+            payload[counter][key.split("-")[1]] = value;
+          } else {
+            counter = Number(key.split("-")[2]);
+            if (!payload[counter]) payload[counter] = {};
+            payload[counter][key.split("-")[1]] = value;
+          }
+        }
+        if (key.split("-")[0] == "main") {
+          if (!payload["main"]) payload["main"] = {};
+          if (!key.split("-")[2]) {
+            payload["main"][key.split("-")[1]] = value;
+          } else {
+            payload["main"][key.split("-")[2]] = value;
+          }
         }
       }
-      const response = await fetch(import.meta.env.VITE_NEW_EXERCISE_RECORD_URL, {
-        method: "POST",
-        body: JSON.stringify({
-          exercise_records
-        }),
-        mode: 'cors',
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token()}`
-        }
-      })
-      const result = await response.json();
-      console.log(result, "result0000000000000000");
+      console.log(payload)
+      for await (const [_key, value] of Object.entries(payload)) {
+        const response = await fetch(import.meta.env.VITE_NEW_EXERCISE_RECORD_URL, {
+          method: "POST",
+          body: JSON.stringify({
+            exercise_records: value
+          }),
+          mode: 'cors',
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token()}`
+          }
+        })
+        const result = await response.json();
+        console.log(result, "result0000000000000000");
+      }
       setAddingExercise(false);
     } catch (e) {
       console.log(e);
@@ -122,11 +149,11 @@ export const UserData: Component = () => {
         <form onSubmit={addExerciseRecord} style={{ "display": "flex", "flex-direction": "column" }}>
           <p style={{ "margin-top": "0px", "margin-bottom": "4px", "align-self": "center" }}>Add a main exercise:</p>
           <div style={{ "margin-bottom": "4px" }}>
-            <input type="radio" id="max" name="main-exercise-type" value="max" onClick={() => setMaybeMainExercise('max')} />
+            <input type="radio" id="max" name="main-exercise-type" value="max" onclick={() => setMaybeMainExercise('max')} />
             <label for="max">max</label>
-            <input type="radio" id="speed" name="main-exercise-type" value="speed" onClick={() => setMaybeMainExercise('speed')} />
+            <input type="radio" id="speed" name="main-exercise-type" value="speed" onclick={() => setMaybeMainExercise('speed')} />
             <label for="speed">speed</label>
-            <input type="radio" id="none" name="main-exercise-type" value="none" checked onClick={() => setMaybeMainExercise('none')} />
+            <input type="radio" id="none" name="main-exercise-type" value="none" checked onclick={() => setMaybeMainExercise('none')} />
             <label for="none">none</label>
           </div>
           <Show when={maybeMainExercise() == 'none'}>
