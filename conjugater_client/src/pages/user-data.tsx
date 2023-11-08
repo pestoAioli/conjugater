@@ -11,7 +11,7 @@ export const UserData: Component = () => {
   const [date, setDate] = createSignal(moment().format('LL'));
   const [workoutFound, setWorkoutFound] = createSignal(false);
   const [exerciseNames, setExerciseNames] = createSignal<string[]>([]);
-  const [exerciseRecords, setExerciseRecords] = createSignal<object[]>([]);
+  const [exerciseRecords, setExerciseRecords] = createSignal<ExerciseRecord[]>([]);
   const [maybeMainExercise, setMaybeMainExercise] = createSignal('');
   const [numAccessory, setNumAccessory] = createSignal([0]);
 
@@ -37,6 +37,7 @@ export const UserData: Component = () => {
     if (socket && date()) {
       console.log('date changed')
       setWorkoutFound(false);
+      setExerciseRecords([]);
       socket.push("find_workout_by_date", { date: date() })
     }
   })
@@ -61,7 +62,7 @@ export const UserData: Component = () => {
 
   }
   let exercise_records = {};
-  let payload: any = {};
+  let payload: Payload = {};
   let counter = 1;
 
   async function addExerciseRecord(e: SubmitEvent) {
@@ -83,7 +84,6 @@ export const UserData: Component = () => {
         } else {
           //@ts-ignore
           exercise_records[e.target.elements[i].getAttribute("name")] = target.elements[i].value;
-          console.log(e.target.elements[i].getAttribute("name"), target.elements[i].value)
         }
       }
       for (const [key, value] of Object.entries(exercise_records)) {
@@ -157,16 +157,30 @@ export const UserData: Component = () => {
       <h2 style={{ "margin-bottom": "0px", "margin-top": "0px" }}>{date()}</h2>
       <Show when={workoutFound()}>
         <For each={exerciseRecords()}>{(record) =>
-          <>
-            <Show when={record.type && record.type != "none"}>
-              <h3>{record.type} day</h3>
+          <Show when={record.type && record.type != "none"}>
+            <h3 style={{ "margin-bottom": "0px", "font-size": "24px", "color": "saddlebrown" }}>{record.type} day</h3>
+            <h4 style={{ "margin-bottom": "0px" }}>{record.exercise}</h4>
+            <Show when={record.type == "speed"}>
+              <p>{record.sets} sets</p>
+              <p>{record.reps} reps</p>
             </Show>
-            <h4>{record.exercise}</h4>
-            <p>{record.sets} sets</p>
-            <p>{record.reps} reps</p>
-            <p>{record.weight} lbs</p>
-            <p style={{ "max-width": "300px" }}>{record.notes} lbs</p>
-          </>
+            <p style={{ "font-size": "larger" }}>{record.weight} lbs</p>
+            <p style={{ "max-width": "310px", "margin-top": "0px" }}>{record.notes}</p>
+          </Show>
+        }
+        </For>
+        <For each={exerciseRecords()}>{(record) =>
+          <div style={{ "display": "flex", "flex-direction": "column", "align-items": "center" }}>
+            <Show when={!record.type || record.type == "none"}>
+              <h4 style={{ "margin-bottom": "0px" }}>{record.exercise}</h4>
+              <div style={{ "display": "flex", "justify-content": "space-between", "gap": "8px", "align-items": "center" }}>
+                <p>{record.sets} sets</p>
+                <p>{record.reps} reps</p>
+                <p>{record.weight} lbs</p>
+              </div>
+              <p style={{ "max-width": "310px" }}>{record.notes}</p>
+            </Show>
+          </div>
         }
         </For>
       </Show>
