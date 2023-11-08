@@ -24,3 +24,14 @@ interface Exercises {
 interface Exercise {
   name: string;
 }
+interface ExerciseRecord {
+  type?: string;
+  reps?: string;
+  weight: string;
+  sets?: string;
+  exercise: string;
+  notes?: string;
+}
+interface Payload {
+  [key: string | number]: any;
+}
