@@ -34,7 +34,7 @@ export const Login: Component<{ setLoggingIn: Setter<boolean>, setLoggedIn: Sett
         setLoggingIn(false);
         setLoggedIn(true);
         setToken(token)
-        navigate('/');
+        navigate('/home');
       } catch (e) {
         setError(true)
       }

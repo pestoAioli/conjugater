@@ -26,6 +26,8 @@
   },
   "dependencies": {
     "@solidjs/router": "^0.8.3",
+    "@types/d3": "^7.4.3",
+    "d3": "^7.8.5",
     "moment": "^2.29.4",
     "phoenix": "^1.7.9",
     "solid-js": "^1.7.6"

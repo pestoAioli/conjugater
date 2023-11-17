@@ -161,7 +161,6 @@ export const AddExerciseRecord: Component<
             </Show>
             <Show when={accessory != 0}>
               <NewAccessory accessoryId={accessory} list={"exercise-names"} />
-              <button>remove</button>
             </Show>
           </>
         }
