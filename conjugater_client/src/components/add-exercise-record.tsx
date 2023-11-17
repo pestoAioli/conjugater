@@ -123,7 +123,7 @@ export const AddExerciseRecord: Component<
       }
     }
     return (
-      <form onSubmit={addExerciseRecord} style={{ "display": "flex", "flex-direction": "column" }}>
+      <form onSubmit={addExerciseRecord} style={{ "display": "flex", "flex-direction": "column", "max-width": "400px", "align-items": "center" }}>
         <p style={{ "margin-top": "0px", "margin-bottom": "4px", "align-self": "center" }}>Add a main exercise:</p>
         <div style={{ "margin-bottom": "4px" }}>
           <input type="radio" id="max" name="main-exercise-type" value="max" onclick={() => setMaybeMainExercise('max')} />
@@ -161,7 +161,6 @@ export const AddExerciseRecord: Component<
             </Show>
             <Show when={accessory != 0}>
               <NewAccessory accessoryId={accessory} list={"exercise-names"} />
-              <button>remove</button>
             </Show>
           </>
         }
