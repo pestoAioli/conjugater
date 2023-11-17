@@ -52,6 +52,31 @@ defmodule ConjugaterWeb.RoomChannel do
   end
 
   @impl true
+  def handle_in("find_history_of_main_exercise", payload, socket) do
+    exercise_records =
+      Conjugater.UserRecords.list_exercise_records()
+      |> Enum.filter(fn record ->
+        record.type == payload["type"] && record.exercise == payload["exercise"]
+      end)
+      |> Enum.map(fn record ->
+        %{
+          exercise: record.exercise,
+          type: record.type,
+          weight: record.weight,
+          reps: record.reps,
+          sets: record.sets,
+          notes: record.notes,
+          user_id: record.user_id,
+          date: record.date
+        }
+      end)
+
+    push(socket, "found_history_of_main_exercise", %{exercise_records: exercise_records})
+
+    {:noreply, socket}
+  end
+
+  @impl true
   def handle_info({:exercise_added, exercise}, socket) do
     IO.inspect(exercise)
 

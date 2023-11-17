@@ -1,8 +1,10 @@
-import { createSignal, type Component, createEffect, Show, For } from "solid-js";
+import { createSignal, type Component, createEffect, Show, For, onMount } from "solid-js";
 import { useAuth } from "../contexts/auth-context-provider";
 import { useSocket } from "../contexts/socket-context-provider";
 import moment from "moment";
 import { AddExerciseRecord } from "../components/add-exercise-record";
+import { A } from "@solidjs/router";
+import { LinePlot } from "../components/line-plot";
 
 export const UserData: Component = () => {
   const [token, _setToken] = useAuth();
@@ -15,6 +17,8 @@ export const UserData: Component = () => {
   const [maybeMainExercise, setMaybeMainExercise] = createSignal('');
   const [numAccessory, setNumAccessory] = createSignal([0]);
   const [typeEx, setTypeEx] = createSignal('');
+  const [mainName, setMainName] = createSignal('');
+  const [historyOfMain, setHistoryOfMain] = createSignal<any[]>([]);
 
   if (socket) {
     console.log("socket connected")
@@ -34,9 +38,18 @@ export const UserData: Component = () => {
         setExerciseRecords((prev: any[]) => [...prev, record]);
         if (record.type == "speed" || record.type == "max") {
           setTypeEx(record.type);
+          setMainName(record.exercise);
         }
       })
       setWorkoutFound(true);
+    })
+    socket.on("found_history_of_main_exercise", (payload: any) => {
+      console.log(payload, "history?")
+      payload.exercise_records.map((record: any) => {
+        let tuple = { date: record.date, weight: record.weight };
+        setHistoryOfMain((prev: any[]) => [...prev, tuple]);
+      })
+      console.log(historyOfMain(), "history!")
     })
   }
   createEffect(() => {
@@ -50,13 +63,23 @@ export const UserData: Component = () => {
   });
 
   createEffect(() => {
-    if (socket && typeEx()) {
+    if (socket && typeEx() && mainName()) {
+      setHistoryOfMain([])
+
       console.log(typeEx());
-      socket.push("find_history_of_main_exercise", { type: typeEx() })
+      socket.push("find_history_of_main_exercise", { type: typeEx(), exercise: mainName() })
     }
   });
+  createEffect(() => {
+    if (historyOfMain()) {
+      if (historyOfMain().length > 1) {
+      }
+    }
+  })
+
   return (
     <div class="home-login">
+      <A href='/login' style={{ "color": "rebeccapurple", "align-self": "end" }}>logout</A>
       <datalist id="exercise-names">
         <For each={exerciseNames()}>{(exercise) =>
           <option value={exercise} />

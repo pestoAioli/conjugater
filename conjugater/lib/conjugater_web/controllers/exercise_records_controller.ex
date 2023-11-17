@@ -48,7 +48,4 @@ defmodule ConjugaterWeb.ExerciseRecordsController do
       send_resp(conn, :no_content, "")
     end
   end
-
-  defp make_single_entry() do
-  end
 end

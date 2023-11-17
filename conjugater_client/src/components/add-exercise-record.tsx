@@ -123,7 +123,7 @@ export const AddExerciseRecord: Component<
       }
     }
     return (
-      <form onSubmit={addExerciseRecord} style={{ "display": "flex", "flex-direction": "column", "max-width": "400px", "align-items": "center" }}>
+      <form onSubmit={addExerciseRecord} style={{ "display": "flex", "flex-direction": "column" }}>
         <p style={{ "margin-top": "0px", "margin-bottom": "4px", "align-self": "center" }}>Add a main exercise:</p>
         <div style={{ "margin-bottom": "4px" }}>
           <input type="radio" id="max" name="main-exercise-type" value="max" onclick={() => setMaybeMainExercise('max')} />
