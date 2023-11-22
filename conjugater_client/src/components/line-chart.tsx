@@ -1,16 +1,28 @@
-import { createSignal, type Component, createEffect, For } from "solid-js";
-import '../styles/chart.css';
+import { createSignal, type Component, createEffect, For, Accessor, onMount } from "solid-js";
 
-export const LineChart: Component<{ width: number; height: number; exerciseData: any }> =
+export const LineChart: Component<{ width: number; height: number; exerciseData: any; exerciseName: any }> =
   ({
     width,
     height,
-    exerciseData
+    exerciseData,
+    exerciseName
   }) => {
+    onMount(() => {
+      Flotr.draw(document.getElementById("chart"),
+        [{ data: exerciseData, lines: { show: true } }],
+        {
+          xaxis: {
+            mode: 'time'
+          },
+          title: `${exerciseName} progression`,
+        }
+      )
+    })
+
     return (
       <div style={{
-        "height": `${height}px`,
-        "width": `${width}px`,
-      }} id="line-chart" />
+        "height": "200px",
+        "width": "100px",
+      }} id="chart" />
     )
   }

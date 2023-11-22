@@ -125,7 +125,7 @@ export const UserData: Component = () => {
           </div>
         }
         </For>
-        <LineChart width={200} height={100} />
+        <LineChart width={200} height={100} exerciseData={historyOfMain()} exerciseName={mainName()} />
       </Show>
       <Show when={!workoutFound() && !addingExercise()}>
         <i style={{ "margin": "8px" }}>No exercises have been logged for this day!</i>
