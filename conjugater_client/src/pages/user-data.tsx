@@ -4,7 +4,7 @@ import { useSocket } from "../contexts/socket-context-provider";
 import moment from "moment";
 import { AddExerciseRecord } from "../components/add-exercise-record";
 import { A } from "@solidjs/router";
-import { LinePlot } from "../components/line-plot";
+import { LineChart } from "../components/line-chart";
 
 export const UserData: Component = () => {
   const [token, _setToken] = useAuth();
@@ -125,6 +125,7 @@ export const UserData: Component = () => {
           </div>
         }
         </For>
+        <LineChart width={200} height={100} />
       </Show>
       <Show when={!workoutFound() && !addingExercise()}>
         <i style={{ "margin": "8px" }}>No exercises have been logged for this day!</i>
