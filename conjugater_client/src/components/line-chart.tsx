@@ -7,16 +7,20 @@ export const LineChart: Component<{ width: number; height: number; exerciseData:
     exerciseData,
     exerciseName
   }) => {
-    onMount(() => {
-      Flotr.draw(document.getElementById("chart"),
-        [{ data: exerciseData, lines: { show: true } }],
-        {
-          xaxis: {
-            mode: 'time'
-          },
-          title: `${exerciseName} progression`,
-        }
-      )
+    createEffect(() => {
+      if (exerciseData()) {
+        console.log(exerciseData(), "eeeeeeeeee")
+        Flotr.draw(document.getElementById("chart"),
+          [{ data: exerciseData(), lines: { show: true } }],
+          {
+            xaxis: {
+              mode: 'time',
+              timemode: 'UTC'
+            },
+            title: `${exerciseName} progression`,
+          }
+        )
+      }
     })
 
     return (

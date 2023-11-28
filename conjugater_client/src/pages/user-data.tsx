@@ -4,6 +4,7 @@ import { useSocket } from "../contexts/socket-context-provider";
 import moment from "moment";
 import { AddExerciseRecord } from "../components/add-exercise-record";
 import { A } from "@solidjs/router";
+import { LinePlot } from "../components/line-plot";
 import { LineChart } from "../components/line-chart";
 
 export const UserData: Component = () => {
@@ -46,7 +47,7 @@ export const UserData: Component = () => {
     socket.on("found_history_of_main_exercise", (payload: any) => {
       console.log(payload, "history?")
       payload.exercise_records.map((record: any) => {
-        let tuple = { date: record.date, weight: record.weight };
+        let tuple = [new Date(record.date), record.weight];
         setHistoryOfMain((prev: any[]) => [...prev, tuple]);
       })
       console.log(historyOfMain(), "history!")
@@ -125,7 +126,7 @@ export const UserData: Component = () => {
           </div>
         }
         </For>
-        <LineChart width={200} height={100} exerciseData={historyOfMain()} exerciseName={mainName()} />
+        <LineChart width={200} height={100} exerciseData={historyOfMain} exerciseName={mainName()} />
       </Show>
       <Show when={!workoutFound() && !addingExercise()}>
         <i style={{ "margin": "8px" }}>No exercises have been logged for this day!</i>
