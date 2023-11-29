@@ -4,7 +4,6 @@ import { useSocket } from "../contexts/socket-context-provider";
 import moment from "moment";
 import { AddExerciseRecord } from "../components/add-exercise-record";
 import { A } from "@solidjs/router";
-import { LinePlot } from "../components/line-plot";
 import { LineChart } from "../components/line-chart";
 
 export const UserData: Component = () => {
@@ -19,24 +18,17 @@ export const UserData: Component = () => {
   const [numAccessory, setNumAccessory] = createSignal([0]);
   const [typeEx, setTypeEx] = createSignal('');
   const [mainName, setMainName] = createSignal('');
-  const [historyOfMain, setHistoryOfMain] = createSignal<any[]>([]);
+  const [historyOfMain, setHistoryOfMain] = createSignal<[Date, string][]>([]);
 
   if (socket) {
-    console.log("socket connected")
-    console.log(token());
     socket.push("joined_my_feed", {});
     socket.on("list_exercise_names", (payload: Exercises) => {
-      console.log(payload.exercises);
       payload.exercises.map((exercise) => setExerciseNames((name) => [...name, exercise.name]))
-      console.log(exerciseNames(), "exerdsdfad")
     })
-    socket.on("exercise_added", (payload: any) => {
-      console.log(payload, "addedddddddddddddddd");
-    })
-    socket.on("found_workout_by_date", (payload: any) => {
-      console.log(payload);
-      payload.exercise_records.map((record: any) => {
-        setExerciseRecords((prev: any[]) => [...prev, record]);
+
+    socket.on("found_workout_by_date", (payload: ExerciseRecords) => {
+      payload.exercise_records.map((record) => {
+        setExerciseRecords((prev) => [...prev, record]);
         if (record.type == "speed" || record.type == "max") {
           setTypeEx(record.type);
           setMainName(record.exercise);
@@ -44,19 +36,15 @@ export const UserData: Component = () => {
       })
       setWorkoutFound(true);
     })
-    socket.on("found_history_of_main_exercise", (payload: any) => {
-      console.log(payload, "history?")
-      payload.exercise_records.map((record: any) => {
-        let tuple = [new Date(record.date), record.weight];
-        setHistoryOfMain((prev: any[]) => [...prev, tuple]);
+    socket.on("found_history_of_main_exercise", (payload: ExerciseRecords) => {
+      payload.exercise_records.map((record) => {
+        let tuple: [Date, string] = [new Date(record.date), record.weight];
+        setHistoryOfMain((prev) => [...prev, tuple]);
       })
-      console.log(historyOfMain(), "history!")
     })
   }
   createEffect(() => {
     if (socket && date()) {
-      console.log('date changed')
-      console.log(addingExercise());
       setWorkoutFound(false);
       setExerciseRecords([]);
       socket.push("find_workout_by_date", { date: date() })
@@ -78,6 +66,11 @@ export const UserData: Component = () => {
     }
   })
 
+  function setFormDate(e: Event & { currentTarget: HTMLFormElement; target: Element }) {
+    const target = e.target as HTMLFormElement;
+    setDate(moment(target.value).format('LL'))
+  }
+
   return (
     <div class="home-login">
       <A href='/login' style={{ "color": "rebeccapurple", "align-self": "end" }}>logout</A>
@@ -88,7 +81,7 @@ export const UserData: Component = () => {
       </datalist>
       <div style={{ "display": "flex", "align-items": "center", "gap": "10px" }}>
         <p>Select date:</p>
-        <form onChange={(e: any) => { setDate(moment(e.target.value).format('LL')) }}>
+        <form onChange={setFormDate}>
           <input type="date" name="date" id="date" max={new Date().toISOString().split('T')[0]} />
         </form>
       </div>
@@ -126,7 +119,7 @@ export const UserData: Component = () => {
           </div>
         }
         </For>
-        <LineChart width={200} height={100} exerciseData={historyOfMain} exerciseName={mainName()} />
+        <LineChart width={300} height={200} exerciseData={historyOfMain} exerciseName={mainName()} />
       </Show>
       <Show when={!workoutFound() && !addingExercise()}>
         <i style={{ "margin": "8px" }}>No exercises have been logged for this day!</i>

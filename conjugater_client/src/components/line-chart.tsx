@@ -8,7 +8,28 @@ export const LineChart: Component<{ width: number; height: number; exerciseData:
     exerciseName
   }) => {
     createEffect(() => {
-      if (exerciseData()) {
+      if (exerciseData().length == 1) {
+        console.log(exerciseData(), "oneeee")
+        Flotr.draw(document.getElementById("chart"),
+          [{
+            data: exerciseData(),
+            lines: { show: true },
+            points: { show: true }
+          }],
+          {
+            xaxis: {
+              mode: 'time',
+              timemode: 'UTC',
+              noticks: 1
+            },
+            yaxis: {
+              noticks: 2,
+            },
+            title: `yuove only done ${exerciseName} once, on this day!`,
+          }
+        )
+      }
+      if (exerciseData().length > 1) {
         console.log(exerciseData(), "eeeeeeeeee")
         Flotr.draw(document.getElementById("chart"),
           [{ data: exerciseData(), lines: { show: true } }],
@@ -25,8 +46,8 @@ export const LineChart: Component<{ width: number; height: number; exerciseData:
 
     return (
       <div style={{
-        "height": "200px",
-        "width": "100px",
+        "width": width ? `${width}px` : "500px",
+        "height": height ? `${height}px` : "300px",
       }} id="chart" />
     )
   }
