@@ -10,6 +10,7 @@ interface HTMLInputElementSignUp extends EventTarget {
 interface HTMLInputElementAddExercise extends EventTarget {
   exercise: { value: string }
 }
+
 interface HTMLInputElementAddExerciseRecord extends EventTarget {
   type: { value: string };
   weight: { value: number };
@@ -31,7 +32,13 @@ interface ExerciseRecord {
   sets?: string;
   exercise: string;
   notes?: string;
+  user_id?: number;
+  date: string;
 }
+interface ExerciseRecords {
+  exercise_records: ExerciseRecord[];
+}
+
 interface Payload {
   [key: string | number]: any;
 }
