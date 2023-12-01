@@ -3,15 +3,16 @@ import { useAuth } from "../contexts/auth-context-provider";
 import { useSocket } from "../contexts/socket-context-provider";
 import moment from "moment";
 import { createStore } from "solid-js/store";
-import { constants } from "zlib";
+import { LineChart } from "../components/line-chart";
 
 export const RecentRecords: Component = () => {
-  const [token, _setToken] = useAuth();
+  const [_token, _setToken] = useAuth();
   const socket = useSocket();
-  const [date, setDate] = createSignal(moment().format('LL'));
+  const [date, _setDate] = createSignal(moment().format('LL'));
   const [loading, setLoading] = createSignal(true);
-  const [exerciseRecords, setExerciseRecords] = createStore<any>();
+  const [exerciseRecords, setExerciseRecords] = createStore<{ [key: string]: object }>();
   const [dates, setDates] = createSignal<string[]>([]);
+  const [width, setWidth] = createSignal();
 
   if (socket) {
     socket.push("joined_home_page", { date: date() })
@@ -32,7 +33,7 @@ export const RecentRecords: Component = () => {
         console.log(day, tempArr)
       })
       for (const [key, value] of Object.entries(tempArr)) {
-        setExerciseRecords(`${key}`, (rec: any) => value)
+        setExerciseRecords(`${key}`, rec => value)
         console.log(exerciseRecords[key])
         setDates(asd => [...asd, key])
       }
@@ -41,6 +42,8 @@ export const RecentRecords: Component = () => {
     })
   }
 
+
+
   return (
     <>
       <Show when={loading()}>
@@ -48,16 +51,32 @@ export const RecentRecords: Component = () => {
       </Show>
       <Show when={!loading()}>
         <h2 style={{ "margin-left": "8px" }}>exercises done this month:</h2>
-        <For each={dates()}>{(date, i) =>
-          <For each={exerciseRecords[date]}>{(record) =>
-            <div style={{ "display": "flex", "border": "1px solid black", "border-radius": "8px", "margin-bottom": "4px", "margin-left": "8px", "margin-right": "8px" }}>
-              <div>
-                <p style={{ "margin-left": "8px" }}><b>{record.user_name}</b> @ {record.date}</p>
-                <p style={{ "margin-left": "8px" }}>{record.type ? record.type : `just accessory work`}: {record.exercise}</p>
-              </div>
-            </div>
-          }
-          </For>
+        <For each={dates()}>{(date, k) =>
+          <div style={{ "display": "flex", "flex-direction": "column", "border": "1px solid black", "background-color": "whitesmoke", "border-radius": "8px", "margin-bottom": "4px", "margin-left": "8px", "margin-right": "8px" }}>
+            <For each={exerciseRecords[date] as any[]}>{(record: ExerciseRecord, i) =>
+              <>
+                <Show when={i() == 0}>
+                  <h3 style={{ "margin-left": "8px", "margin-bottom": "0px" }}>{record.user_name} @ {record.date}</h3>
+                </Show>
+                <Show when={!record.type}>
+                  <div style={{ "display": "flex", "align-items": "baseline" }}>
+                    <p style={{ "margin-bottom": "0px", "margin-left": "8px", "font-size": "larger", "color": "mediumorchid" }}>{record.exercise}</p>
+                    <p style={{ "margin-bottom": "0px", "margin-left": "8px" }}>{record.sets} sets</p>
+                    <p style={{ "margin-bottom": "0px", "margin-left": "8px" }}>@ {record.weight} lbs</p>
+                  </div>
+                </Show>
+                <Show when={record.type}>
+                  <div style={{ "display": "flex", "margin-left": "8px", "gap": "4px", "align-items": "center" }}>
+                    <p style={{ "font-size": "larger", "color": "mediumorchid" }}>{record.type == 'max' ? `${record.type} effort` : record.type == 'speed' ? `${record.type} day` : `just accessory work`}:</p>
+                    <p style={{ "color": "mediumslateblue" }}>{record.exercise}</p>
+                    <p> @ {record.weight} lbs</p>
+                  </div>
+                  <LineChart width={300} height={200} exerciseName={record.exercise} exerciseType={record.type!} id={k()} />
+                </Show>
+              </>
+            }
+            </For>
+          </div>
         }
         </For>
       </Show>

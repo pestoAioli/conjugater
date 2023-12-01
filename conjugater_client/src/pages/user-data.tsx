@@ -18,7 +18,6 @@ export const UserData: Component = () => {
   const [numAccessory, setNumAccessory] = createSignal([0]);
   const [typeEx, setTypeEx] = createSignal('');
   const [mainName, setMainName] = createSignal('');
-  const [historyOfMain, setHistoryOfMain] = createSignal<[Date, string][]>([]);
   const [width, setWidth] = createSignal(300);
   const [height, setHeight] = createSignal(200);
 
@@ -38,12 +37,7 @@ export const UserData: Component = () => {
       })
       setWorkoutFound(true);
     })
-    socket.on("found_history_of_main_exercise", (payload: ExerciseRecords) => {
-      payload.exercise_records.map((record) => {
-        let tuple: [Date, string] = [new Date(record.date), record.weight];
-        setHistoryOfMain((prev) => [...prev, tuple]);
-      })
-    })
+
   }
   createEffect(() => {
     if (socket && date()) {
@@ -52,21 +46,6 @@ export const UserData: Component = () => {
       socket.push("find_workout_by_date", { date: date() })
     }
   });
-
-  createEffect(() => {
-    if (socket && typeEx() && mainName()) {
-      setHistoryOfMain([])
-
-      console.log(typeEx());
-      socket.push("find_history_of_main_exercise", { type: typeEx(), exercise: mainName() })
-    }
-  });
-  createEffect(() => {
-    if (historyOfMain()) {
-      if (historyOfMain().length > 1) {
-      }
-    }
-  })
 
   function setFormDate(e: Event & { currentTarget: HTMLFormElement; target: Element }) {
     const target = e.target as HTMLFormElement;
@@ -121,7 +100,7 @@ export const UserData: Component = () => {
           </div>
         }
         </For>
-        <LineChart width={width()} height={height()} exerciseData={historyOfMain} exerciseName={mainName()} />
+        <LineChart width={width()} height={height()} exerciseType={typeEx()} exerciseName={mainName()} id={999} />
       </Show>
       <Show when={!workoutFound() && !addingExercise()}>
         <i style={{ "margin": "8px" }}>No exercises have been logged for this day!</i>
