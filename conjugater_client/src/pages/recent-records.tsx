@@ -49,15 +49,26 @@ export const RecentRecords: Component = () => {
       <Show when={!loading()}>
         <h2 style={{ "margin-left": "8px" }}>exercises done this month:</h2>
         <For each={dates()}>{(date, i) =>
-          <For each={exerciseRecords[date]}>{(record) =>
-            <div style={{ "display": "flex", "border": "1px solid black", "border-radius": "8px", "margin-bottom": "4px", "margin-left": "8px", "margin-right": "8px" }}>
-              <div>
-                <p style={{ "margin-left": "8px" }}><b>{record.user_name}</b> @ {record.date}</p>
-                <p style={{ "margin-left": "8px" }}>{record.type ? record.type : `just accessory work`}: {record.exercise}</p>
-              </div>
-            </div>
-          }
-          </For>
+          <div style={{ "display": "flex", "border": "1px solid black", "border-radius": "8px", "margin-bottom": "4px", "margin-left": "8px", "margin-right": "8px" }}>
+            <For each={exerciseRecords[date]}>{(record: ExerciseRecord, i) =>
+              <>
+                <div>
+                  <Show when={record.type}>
+                    <p style={{ "margin-left": "8px" }}><b>{record.user_name}</b> @ {record.date}</p>
+                    <p style={{ "margin-left": "8px" }}>{record.type != 'none' ? record.type : `just accessory work`}: {record.exercise}</p>
+                  </Show>
+                </div>
+                <div>
+                  <Show when={!record.type}>
+                    <p style={{ "margin-left": "8px" }}>{record.exercise}</p>
+                    <p style={{ "margin-left": "8px" }}>{record.sets}</p>
+                    <p style={{ "margin-left": "8px" }}>{record.weight}</p>
+                  </Show>
+                </div>
+              </>
+            }
+            </For>
+          </div>
         }
         </For>
       </Show>
