@@ -23,7 +23,6 @@ export const UserData: Component = () => {
   const [height, setHeight] = createSignal(200);
 
   if (socket) {
-    console.log(date(), 'date')
     socket.push("joined_my_feed", {});
     socket.on("list_exercise_names", (payload: Exercises) => {
       payload.exercises.map((exercise) => setExerciseNames((name) => [...name, exercise.name]))
