@@ -19,6 +19,8 @@ export const UserData: Component = () => {
   const [typeEx, setTypeEx] = createSignal('');
   const [mainName, setMainName] = createSignal('');
   const [historyOfMain, setHistoryOfMain] = createSignal<[Date, string][]>([]);
+  const [width, setWidth] = createSignal(300);
+  const [height, setHeight] = createSignal(200);
 
   if (socket) {
     socket.push("joined_my_feed", {});
@@ -119,7 +121,7 @@ export const UserData: Component = () => {
           </div>
         }
         </For>
-        <LineChart width={300} height={200} exerciseData={historyOfMain} exerciseName={mainName()} />
+        <LineChart width={width()} height={height()} exerciseData={historyOfMain} exerciseName={mainName()} />
       </Show>
       <Show when={!workoutFound() && !addingExercise()}>
         <i style={{ "margin": "8px" }}>No exercises have been logged for this day!</i>

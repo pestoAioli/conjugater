@@ -34,6 +34,7 @@ interface ExerciseRecord {
   notes?: string;
   user_id?: number;
   date: string;
+  user_name?: string;
 }
 interface ExerciseRecords {
   exercise_records: ExerciseRecord[];

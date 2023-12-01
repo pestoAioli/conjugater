@@ -77,6 +77,71 @@ defmodule ConjugaterWeb.RoomChannel do
   end
 
   @impl true
+  def handle_in("joined_home_page", payload, socket) do
+    months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ]
+
+    [incoming_month | tail] = String.split(payload["date"])
+    [day | _year] = tail
+    day_minus_comma_lol = String.trim(day, ",")
+    IO.inspect(day_minus_comma_lol)
+    IO.inspect(incoming_month)
+    last_month = Enum.at(months, Enum.find_index(months, fn x -> x == incoming_month end) - 1)
+    IO.inspect(last_month)
+
+    bool =
+      Enum.any?(Conjugater.UserRecords.list_exercise_records(), fn record ->
+        [month_of_record | _tail] = String.split(record.date)
+        incoming_month == month_of_record
+      end)
+
+    IO.inspect(bool)
+
+    exercise_records =
+      Conjugater.UserRecords.list_exercise_records()
+      |> Enum.filter(fn record ->
+        if bool do
+          [month_of_record | _tail] = String.split(record.date)
+          incoming_month == month_of_record
+        else
+          [month_of_record | _tail] = String.split(record.date)
+          last_month == month_of_record
+        end
+      end)
+      |> Enum.map(fn record ->
+        user_name = Conjugater.Accounts.get_user!(record.user_id).username
+
+        %{
+          exercise: record.exercise,
+          type: record.type,
+          weight: record.weight,
+          reps: record.reps,
+          sets: record.sets,
+          notes: record.notes,
+          user_id: record.user_id,
+          date: record.date,
+          user_name: user_name
+        }
+      end)
+
+    push(socket, "found_recent_records", %{exercise_records: exercise_records})
+
+    {:noreply, socket}
+  end
+
+  @impl true
   def handle_info({:exercise_added, exercise}, socket) do
     IO.inspect(exercise)
 
