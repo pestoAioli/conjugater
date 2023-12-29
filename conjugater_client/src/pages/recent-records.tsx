@@ -71,7 +71,7 @@ export const RecentRecords: Component = () => {
                     <p style={{ "color": "mediumslateblue" }}>{record.exercise}</p>
                     <p> @ {record.weight} lbs</p>
                   </div>
-                  <LineChart width={300} height={200} exerciseName={record.exercise} exerciseType={record.type!} id={k()} />
+                  <LineChart width={300} height={200} exerciseName={record.type ? record.exercise : null} exerciseType={record.type ? record.type : null} id={k()} />
                 </Show>
               </>
             }
