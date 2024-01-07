@@ -11,18 +11,30 @@ export const LineChart: Component<{ width: number; height: number; data: any; id
     exerciseName
   }) => {
     const [nothingToGraph, setNothingToGraph] = createSignal<boolean>(false);
-    const [historyOfMain, setHistoryOfMain] = createStore<{ [key: string]: [Date, string][] }>();
+    const [historyOfMain, setHistoryOfMain] = createSignal<[Date, string][]>([]);
 
 
     createEffect(() => {
-      console.log(id, exerciseName, 'histroy and then id')
+      console.log(id, data, exerciseName, 'histroy and then id')
+      if (id != 999) {
+        setHistoryOfMain([]);
+        for (const [key, value] of Object.entries(data)) {
+          console.log(value)
+          setHistoryOfMain(prev => [...prev, [new Date(value.date), value.weight]])
+        }
+      } else {
+        setHistoryOfMain([]);
+        console.log(data, 'data')
+        setHistoryOfMain(data)
+      }
       //@ts-ignore
       Flotr.draw(document.getElementById(`chart${id}`),
-        [{ data: data, lines: { show: true } }],
+        [{ data: historyOfMain(), lines: { show: true } }],
         {
           xaxis: {
             mode: 'time',
-            timemode: 'UTC'
+            timemode: 'UTC',
+            minTicks: 4
           },
           title: `${exerciseName} progression`,
         }
