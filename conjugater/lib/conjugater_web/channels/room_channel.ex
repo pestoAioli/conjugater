@@ -35,6 +35,7 @@ defmodule ConjugaterWeb.RoomChannel do
       |> Enum.map(fn record ->
         %{
           exercise: record.exercise,
+          id: record.id,
           type: record.type,
           weight: record.weight,
           reps: record.reps,
@@ -61,6 +62,7 @@ defmodule ConjugaterWeb.RoomChannel do
       |> Enum.map(fn record ->
         %{
           exercise: record.exercise,
+          id: record.id,
           type: record.type,
           weight: record.weight,
           reps: record.reps,
@@ -70,6 +72,8 @@ defmodule ConjugaterWeb.RoomChannel do
           date: record.date
         }
       end)
+
+    IO.inspect(exercise_records)
 
     push(socket, "found_history_of_main_exercise", %{exercise_records: exercise_records})
 
@@ -107,8 +111,6 @@ defmodule ConjugaterWeb.RoomChannel do
         incoming_month == month_of_record
       end)
 
-    IO.inspect(bool)
-
     exercise_records =
       Conjugater.UserRecords.list_exercise_records()
       |> Enum.filter(fn record ->
@@ -125,6 +127,7 @@ defmodule ConjugaterWeb.RoomChannel do
 
         %{
           exercise: record.exercise,
+          id: record.id,
           type: record.type,
           weight: record.weight,
           reps: record.reps,
@@ -135,6 +138,8 @@ defmodule ConjugaterWeb.RoomChannel do
           user_name: user_name
         }
       end)
+
+    IO.inspect(exercise_records)
 
     push(socket, "found_recent_records", %{exercise_records: exercise_records})
 

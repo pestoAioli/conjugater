@@ -27,6 +27,7 @@ interface Exercise {
 }
 interface ExerciseRecord {
   type?: string;
+  id: number;
   reps?: string;
   weight: string;
   sets?: string;
@@ -35,6 +36,7 @@ interface ExerciseRecord {
   user_id?: number;
   date: string;
   user_name?: string;
+  data?: any;
 }
 interface ExerciseRecords {
   exercise_records: ExerciseRecord[];
