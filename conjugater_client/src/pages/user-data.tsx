@@ -20,6 +20,8 @@ export const UserData: Component = () => {
   const [mainName, setMainName] = createSignal('');
   const [width, setWidth] = createSignal(300);
   const [height, setHeight] = createSignal(200);
+  const [hist, setHist] = createSignal<[Date, string][]>([]);
+  const [done, setDone] = createSignal(false);
 
   if (socket) {
     socket.push("joined_my_feed", {});
@@ -33,16 +35,26 @@ export const UserData: Component = () => {
         if (record.type == "speed" || record.type == "max") {
           setTypeEx(record.type);
           setMainName(record.exercise);
+          socket.push("find_history_of_main_exercise", { type: record.type, exercise: record.exercise })
         }
       })
       setWorkoutFound(true);
     })
-
+    socket.on("found_history_of_main_exercise", (payload: ExerciseRecords) => {
+      console.log(payload)
+      payload.exercise_records.map(record => {
+        setHist(prev => [...prev, [new Date(record.date), record.weight]])
+      })
+      console.log(hist())
+      setDone(true);
+    })
   }
   createEffect(() => {
     if (socket && date()) {
       setWorkoutFound(false);
       setExerciseRecords([]);
+      setHist([]);
+      setDone(false)
       socket.push("find_workout_by_date", { date: date() })
     }
   });
@@ -100,7 +112,9 @@ export const UserData: Component = () => {
           </div>
         }
         </For>
-        <LineChart width={width()} height={height()} exerciseType={typeEx()} exerciseName={mainName()} id={999} />
+        <Show when={done()}>
+          <LineChart width={width()} height={height()} exerciseName={mainName()} id={999} data={hist()} />
+        </Show>
       </Show>
       <Show when={!workoutFound() && !addingExercise()}>
         <i style={{ "margin": "8px" }}>No exercises have been logged for this day!</i>
