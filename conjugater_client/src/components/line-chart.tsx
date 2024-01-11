@@ -18,8 +18,9 @@ export const LineChart: Component<{ width: number; height: number; data: any; id
       console.log(id, data, exerciseName, 'histroy and then id')
       if (id != 999) {
         setHistoryOfMain([]);
-        for (const [key, value] of Object.entries(data)) {
+        for (const [_key, value] of Object.entries(data)) {
           console.log(value)
+          //@ts-ignore
           setHistoryOfMain(prev => [...prev, [new Date(value.date), value.weight]])
         }
       } else {
@@ -31,6 +32,9 @@ export const LineChart: Component<{ width: number; height: number; data: any; id
       Flotr.draw(document.getElementById(`chart${id}`),
         [{ data: historyOfMain(), lines: { show: true } }],
         {
+          grid: {
+            backgroundColor: "#FFFFFF"
+          },
           xaxis: {
             mode: 'time',
             timemode: 'UTC',
@@ -49,6 +53,7 @@ export const LineChart: Component<{ width: number; height: number; data: any; id
         <div style={{
           "width": nothingToGraph() ? "1px" : width ? `${width}px` : "500px",
           "height": nothingToGraph() ? "1px" : height ? `${height}px` : "300px",
+          "margin-left": "12px"
         }} id={`chart${id}`} />
       </>
     )
