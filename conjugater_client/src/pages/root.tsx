@@ -23,7 +23,7 @@ export const Root = () => {
           <Show when={!token()}>
             <p style={{ "margin-right": "8px", "font-size": "18px" }}><a href='/login'><b>login</b></a></p>
           </Show>
-          <A href='search'>search</A>
+          <A href='/home'>search</A>
         </div>
       </div>
       <Outlet />
