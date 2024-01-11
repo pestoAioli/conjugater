@@ -74,13 +74,13 @@ export const RecentRecords: Component = () => {
         ...
       </Show>
       <Show when={!loading()}>
-        <h2 style={{ "margin-left": "8px" }}>exercises done this month:</h2>
+        <h2 style={{ "margin-left": "8px" }}>recent exercises:</h2>
         <For each={dates()}>{(date, k) =>
-          <div style={{ "display": "flex", "flex-direction": "column", "border": "1px solid black", "background-color": "whitesmoke", "border-radius": "8px", "margin-bottom": "4px", "margin-left": "8px", "margin-right": "8px" }}>
+          <div style={{ "display": "flex", "flex-direction": "column", "border": "1px solid black", "max-width": "360px", "background-color": "whitesmoke", "border-radius": "8px", "margin-bottom": "4px", "margin-left": "8px", "margin-right": "8px" }}>
             <For each={exerciseRecords[date] as any[]}>{(record: any, i) =>
               <>
                 <Show when={i() == 0}>
-                  <h3 style={{ "margin-left": "8px", "margin-bottom": "0px" }}>{record.user_name} @ {record.date}</h3>
+                  <span style={{ "margin-left": "8px", "margin-bottom": "0px", "margin-top": "4px", "font-size": "large" }}>{record.date}</span>
                   <Show when={!record.type}>
                     <div style={{ "display": "flex", "align-items": "baseline" }}>
                       <p style={{ "margin-bottom": "0px", "margin-left": "8px", "font-size": "larger", "color": "mediumorchid" }}>{record.exercise}</p>
@@ -89,11 +89,19 @@ export const RecentRecords: Component = () => {
                     </div>
                   </Show>
                   <Show when={record.type}>
+                    <div style={{ "display": "flex", "margin-left": "8px", "height": "28px", "gap": "4px", "align-items": "baseline", "margin-bottom": "0px", "margin-top": "0px" }}>
+                      <p style={{ "margin-bottom": "0px", "margin-top": "4px", "font-size": "x-large", }}>{record.user_name} </p>
+                      <p style={{ "margin-bottom": "0px", "margin-top": "4px", "font-size": "larger" }}>did</p>
+                      <p style={{ "margin-bottom": "0px", "margin-top": "4px", "font-size": "larger", "color": "mediumorchid" }}>{record.type == 'max' ? `${record.type} effort` : record.type == 'speed' ? `${record.type} day` : `just accessory work`}:</p>
+                    </div>
                     <div style={{ "display": "flex", "margin-left": "8px", "gap": "4px", "align-items": "center" }}>
-                      <p style={{ "font-size": "larger", "color": "mediumorchid" }}>{record.type == 'max' ? `${record.type} effort` : record.type == 'speed' ? `${record.type} day` : `just accessory work`}:</p>
                       <p style={{ "color": "mediumslateblue" }}>{record.exercise}</p>
                       <p> @ {record.weight} lbs</p>
                     </div>
+                    <Show when={record.notes}>
+                      <p style={{ "margin-left": "8px", "margin-bottom": "0px", "margin-top": "0px" }}>{record.user_name}'s notes:</p>
+                      <p style={{ "margin-left": "8px" }}>{record.notes}</p>
+                    </Show>
                   </Show>
                 </Show>
                 <Show when={i() == 1}>
