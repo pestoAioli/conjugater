@@ -1,14 +1,11 @@
 import { Show, createSignal } from 'solid-js';
-import { Login } from '../components/login-form';
 import '../styles/home.css';
-import SignUp from '../components/sign-up-form';
 import { SocketContextProvider } from '../contexts/socket-context-provider';
 import { useAuth, useStore } from '../contexts/auth-context-provider';
-import { SignOut } from '../components/sign-out';
 import { A, Outlet } from '@solidjs/router';
 
 export const Root = () => {
-  const [currentUserInfo, _setCurrUserInfo] = useStore();
+  const [_currentUserInfo, _setCurrUserInfo] = useStore();
   const [token, _setToken] = useAuth();
 
   return (
