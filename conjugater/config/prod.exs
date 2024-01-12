@@ -11,3 +11,8 @@ config :logger, level: :info
 
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.
+config :conjugater, Conjugater.Endpoint,
+  check_origin: [
+    "https://conjugater.vercel.app"
+  ],
+  url: [host: "https://conjugater.vercel.app", port: 80]
