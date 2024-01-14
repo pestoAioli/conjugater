@@ -68,22 +68,21 @@ export const RecentRecords: Component = () => {
     socket.on("found_history_of_main_exercise", (payload: ExerciseRecords) => {
       setLoading(true)
       for (let i = 0; i < payload.exercise_records.length; i++) {
-        console.log(payload.exercise_records, "ppp")
+        console.log(payload.exercise_records, "ppp",)
         for (const [key, value] of Object.entries(exerciseRecords)) {
-          if (Object.keys(value).length == 1) {
-            //@ts-ignore
-            if (payload.exercise_records[i].exercise == value[0].exercise) {
+          console.log(key == payload.exercise_records[i].date, payload.exercise_records[i].date, "pppp")
+          //@ts-ignore
+          if (key == payload.exercise_records[i].date) {
+            let dont = false;
+            for (let k = 0; k < Object.keys(value).length; k++) {
+              //@ts-ignore
+              if (value[k].data) dont = true;
+            }
+            if (!dont) {
               setExerciseRecords(key, (prev: []) => [...prev, { data: payload.exercise_records, id: Math.floor(Math.random() * 3393), exercise: payload.exercise_records[0].exercise }])
             }
-            console.log(key, exerciseRecords[key], "hihi")
-          } else {
-            for (let j = 0; j < Object.keys(value).length; j++) {
-              //@ts-ignore
-              if (payload.exercise_records[i].exercise == value[j].exercise && value[j].type) {
-                setExerciseRecords(key, (prev: []) => [...prev, { data: payload.exercise_records, id: Math.floor(Math.random() * 3393), exercise: payload.exercise_records[i].exercise }])
-              }
-            }
           }
+          console.log(key, exerciseRecords[key], "hihi")
         }
       }
       console.log(exerciseRecords, "hehe")
@@ -104,17 +103,10 @@ export const RecentRecords: Component = () => {
         <h2 style={{ "margin-left": "8px" }}>recent exercises:</h2>
         <For each={dates()}>{(date, k) =>
           <div style={{ "display": "flex", "flex-direction": "column", "border": "1px solid black", "max-width": "360px", "background-color": "whitesmoke", "border-radius": "8px", "margin-bottom": "4px", "margin-left": "8px", "margin-right": "8px" }}>
+            <span style={{ "margin-left": "8px", "margin-bottom": "0px", "margin-top": "4px", "font-size": "large" }}>{date}</span>
             <For each={exerciseRecords[date] as any[]}>{(record: any, i) =>
               <>
-                <Show when={i() == 0}>
-                  <span style={{ "margin-left": "8px", "margin-bottom": "0px", "margin-top": "4px", "font-size": "large" }}>{record.date}</span>
-                  <Show when={!record.type}>
-                    <div style={{ "display": "flex", "align-items": "baseline" }}>
-                      <p style={{ "margin-bottom": "0px", "margin-left": "8px", "font-size": "larger", "color": "mediumorchid" }}>{record.exercise}</p>
-                      <p style={{ "margin-bottom": "0px", "margin-left": "8px" }}>{record.sets} sets</p>
-                      <p style={{ "margin-bottom": "0px", "margin-left": "8px" }}>@ {record.weight} lbs</p>
-                    </div>
-                  </Show>
+                <Show when={!record.data}>
                   <Show when={record.type}>
                     <div style={{ "display": "flex", "margin-left": "8px", "height": "28px", "gap": "4px", "align-items": "baseline", "margin-bottom": "0px", "margin-top": "0px" }}>
                       <p style={{ "margin-bottom": "0px", "margin-top": "4px", "font-size": "x-large", }}>{record.user_name} </p>
@@ -122,16 +114,23 @@ export const RecentRecords: Component = () => {
                       <p style={{ "margin-bottom": "0px", "margin-top": "4px", "font-size": "larger", "color": "mediumorchid" }}>{record.type == 'max' ? `${record.type} effort` : record.type == 'speed' ? `${record.type} day` : `just accessory work`}:</p>
                     </div>
                     <div style={{ "display": "flex", "margin-left": "8px", "gap": "4px", "align-items": "center" }}>
-                      <p style={{ "color": "mediumslateblue" }}>{record.exercise}</p>
+                      <p style={{ "color": "mediumorchid" }}>{record.exercise}</p>
                       <p> @ {record.weight} lbs</p>
                     </div>
-                    <Show when={record.notes}>
-                      <p style={{ "margin-left": "8px", "margin-bottom": "0px", "margin-top": "0px" }}>{record.user_name}'s notes:</p>
-                      <p style={{ "margin-left": "8px" }}>{record.notes}</p>
-                    </Show>
+                  </Show>
+                  <Show when={!record.type}>
+                    <div style={{ "display": "flex", "align-items": "baseline" }}>
+                      <p style={{ "margin-bottom": "0px", "margin-left": "8px", "font-size": "large", "color": "mediumslateblue" }}>{record.exercise}</p>
+                      <p style={{ "margin-bottom": "0px", "margin-left": "8px" }}>{record.sets} sets</p>
+                      <p style={{ "margin-bottom": "0px", "margin-left": "8px" }}>@ {record.weight} lbs</p>
+                    </div>
+                  </Show>
+                  <Show when={record.notes}>
+                    <p style={{ "margin-left": "8px", "margin-bottom": "0px", "margin-top": "0px" }}>{record.user_name}'s notes:</p>
+                    <p style={{ "margin-left": "8px" }}>{record.notes}</p>
                   </Show>
                 </Show>
-                <Show when={i() == 1 && record.data}>
+                <Show when={record.data}>
                   <LineChart width={300} height={200} exerciseName={record.exercise} id={record.id} data={record.data} />
                 </Show>
               </>
