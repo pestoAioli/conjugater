@@ -34,12 +34,32 @@ export const RecentRecords: Component = () => {
         }
         console.log(day, tempArr)
       })
+      console.log(tempArr, "tempy")
       for (const [key, value] of Object.entries(tempArr)) {
+        console.log(key, value, "tempy")
         setExerciseRecords(`${key}`, rec => value)
         //@ts-ignore
         console.log(exerciseRecords[key], "2323")
-        //@ts-ignore
-        socket.push("find_history_of_main_exercise", { type: exerciseRecords[key][0].type, exercise: exerciseRecords[key][0].exercise })
+        if (value.length > 1) {
+          for (let i = 0; i < value.length; i++) {
+            //@ts-ignore
+            if (value[i].type) {
+              //@ts-ignore
+              console.log(value[i].type, "ffff")
+              //@ts-ignore
+              socket.push("find_history_of_main_exercise", { type: exerciseRecords[key][0].type, exercise: exerciseRecords[key][0].exercise })
+            }
+          }
+        } else {
+          //@ts-ignore
+          if (exerciseRecords[key][0].type) {
+            //@ts-ignore
+            console.log(exerciseRecords[key][0].type, exerciseRecords[key][0].exercise, "ffff", "2")
+            //@ts-ignore
+            socket.push("find_history_of_main_exercise", { type: exerciseRecords[key][0].type, exercise: exerciseRecords[key][0].exercise })
+          }
+        }
+
         setDates(asd => [...asd, key])
       }
       console.log(exerciseRecords, "333")
@@ -48,13 +68,20 @@ export const RecentRecords: Component = () => {
     socket.on("found_history_of_main_exercise", (payload: ExerciseRecords) => {
       setLoading(true)
       for (let i = 0; i < payload.exercise_records.length; i++) {
+        console.log(payload.exercise_records, "ppp")
         for (const [key, value] of Object.entries(exerciseRecords)) {
-          //@ts-ignore
-          if (payload.exercise_records[i].exercise == value[0].exercise) {
+          if (Object.keys(value).length == 1) {
             //@ts-ignore
-            console.log(value[0].exercise, "value", payload.exercise_records, "exc", i)
-            if (Object.keys(value).length == 1) {
+            if (payload.exercise_records[i].exercise == value[0].exercise) {
               setExerciseRecords(key, (prev: []) => [...prev, { data: payload.exercise_records, id: Math.floor(Math.random() * 3393), exercise: payload.exercise_records[0].exercise }])
+            }
+            console.log(key, exerciseRecords[key], "hihi")
+          } else {
+            for (let j = 0; j < Object.keys(value).length; j++) {
+              //@ts-ignore
+              if (payload.exercise_records[i].exercise == value[j].exercise && value[j].type) {
+                setExerciseRecords(key, (prev: []) => [...prev, { data: payload.exercise_records, id: Math.floor(Math.random() * 3393), exercise: payload.exercise_records[i].exercise }])
+              }
             }
           }
         }
@@ -104,7 +131,7 @@ export const RecentRecords: Component = () => {
                     </Show>
                   </Show>
                 </Show>
-                <Show when={i() == 1}>
+                <Show when={i() == 1 && record.data}>
                   <LineChart width={300} height={200} exerciseName={record.exercise} id={record.id} data={record.data} />
                 </Show>
               </>

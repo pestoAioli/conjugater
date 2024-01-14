@@ -16,7 +16,7 @@ export const LineChart: Component<{ width: number; height: number; data: any; id
 
     createEffect(() => {
       console.log(id, data, exerciseName, 'histroy and then id')
-      if (id != 999) {
+      if (id != 999 && data) {
         setHistoryOfMain([]);
         for (const [_key, value] of Object.entries(data)) {
           console.log(value)
@@ -53,7 +53,7 @@ export const LineChart: Component<{ width: number; height: number; data: any; id
         <div style={{
           "width": nothingToGraph() ? "1px" : width ? `${width}px` : "500px",
           "height": nothingToGraph() ? "1px" : height ? `${height}px` : "300px",
-          "margin-left": "12px"
+          "margin-left": id == 999 ? "0px" : "12px"
         }} id={`chart${id}`} />
       </>
     )

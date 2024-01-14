@@ -5,6 +5,8 @@ import moment from "moment";
 import { AddExerciseRecord } from "../components/add-exercise-record";
 import { A } from "@solidjs/router";
 import { LineChart } from "../components/line-chart";
+import { NewAccessory } from "../components/new-accessory";
+import { EditExerciseRecord } from "../components/edit-exercise-record";
 
 export const UserData: Component = () => {
   const [token, _setToken] = useAuth();
@@ -112,6 +114,16 @@ export const UserData: Component = () => {
           </div>
         }
         </For>
+        <EditExerciseRecord
+          setAddingExercise={setAddingExercise}
+          token={token}
+          date={date}
+          exerciseNames={exerciseNames}
+          setMaybeMainExercise={setMaybeMainExercise}
+          maybeMainExercise={maybeMainExercise}
+          numAccessory={numAccessory}
+          setNumAccessory={setNumAccessory}
+        />
         <Show when={done()}>
           <LineChart width={width()} height={height()} exerciseName={mainName()} id={999} data={hist()} />
         </Show>

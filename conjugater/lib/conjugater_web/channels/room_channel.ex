@@ -57,7 +57,7 @@ defmodule ConjugaterWeb.RoomChannel do
     exercise_records =
       Conjugater.UserRecords.list_exercise_records()
       |> Enum.filter(fn record ->
-        record.type == payload["type"] && record.exercise == payload["exercise"]
+        record.type && record.type == payload["type"] && record.exercise == payload["exercise"]
       end)
       |> Enum.map(fn record ->
         %{
