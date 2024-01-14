@@ -38,6 +38,9 @@ defmodule ConjugaterWeb.UserAuthController do
   end
 
   def register(conn, %{"user" => params}) do
+    IO.inspect(conn)
+    IO.inspect(params)
+
     with {:ok, user} <- Accounts.register_user(params) do
       conn
       |> put_status(201)

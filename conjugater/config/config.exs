@@ -13,7 +13,7 @@ config :conjugater,
 
 # Configures the endpoint
 config :conjugater, ConjugaterWeb.Endpoint,
-  url: [host: "localhost"],
+  url: [host: "https://conjugater.vercel.app"],
   adapter: Phoenix.Endpoint.Cowboy2Adapter,
   render_errors: [
     formats: [html: ConjugaterWeb.ErrorHTML, json: ConjugaterWeb.ErrorJSON],
