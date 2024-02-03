@@ -101,4 +101,15 @@ defmodule Conjugater.UserRecords do
   def change_exercise_records(%ExerciseRecords{} = exercise_records, attrs \\ %{}) do
     ExerciseRecords.changeset(exercise_records, attrs)
   end
+
+  def subscribe do
+    Phoenix.PubSub.subscribe(Conjugater.PubSub, "room:lobby")
+  end
+
+  defp broadcast({:error, _reason} = error, _event), do: error
+
+  defp broadcast({:ok, payload}, event) do
+    Phoenix.PubSub.broadcast(Conjugater.PubSub, "room:lobby", {event, payload})
+    {:ok, payload}
+  end
 end

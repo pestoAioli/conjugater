@@ -147,6 +147,18 @@ defmodule ConjugaterWeb.RoomChannel do
   end
 
   @impl true
+  def handle_in("added_exercise_record_overall", _payload, socket) do
+    push(socket, "added_exercise_record_overall", %{})
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_in("updated_exercise_record", _payload, socket) do
+    push(socket, "updated_exercise_record", %{})
+    {:noreply, socket}
+  end
+
+  @impl true
   def handle_info({:exercise_added, exercise}, socket) do
     IO.inspect(exercise)
 
