@@ -45,13 +45,16 @@ export const UserData: Component = () => {
     socket.on("found_history_of_main_exercise", (payload: ExerciseRecords) => {
       console.log(payload)
       payload.exercise_records.map(record => {
-        if (record.date == date()) {
-          setDate(record.date)
-        }
         setHist(prev => [...prev, [new Date(record.date), record.weight]])
       })
       console.log(hist())
       setDone(true);
+    })
+    socket.on("added_exercise_record_overall", (_payload) => {
+      socket.push("find_workout_by_date", { date: date() });
+    })
+    socket.on("updated_exercise_record", (_payload) => {
+      socket.push("find_workout_by_date", { date: date() });
     })
   }
   createEffect(() => {

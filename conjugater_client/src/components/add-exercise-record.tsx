@@ -1,6 +1,7 @@
 import type { Setter, Accessor, Component } from "solid-js";
 import { For, Show } from "solid-js";
 import { NewAccessory } from "./new-accessory";
+import { useSocket } from "../contexts/socket-context-provider";
 
 export const AddExerciseRecord: Component<
   {
@@ -23,6 +24,7 @@ export const AddExerciseRecord: Component<
       numAccessory,
       setNumAccessory,
     }) => {
+    const socket = useSocket();
     async function addExercise(exerciseName: string) {
       try {
         const response = await fetch(import.meta.env.VITE_NEW_EXERCISE_URL, {
@@ -115,6 +117,9 @@ export const AddExerciseRecord: Component<
           })
           const result = await response.json();
           console.log(result, "result0000000000000000");
+          if (socket && result) {
+            socket.push("added_exercise_record_overall", {});
+          }
         }
         setAddingExercise(false);
       } catch (e) {
