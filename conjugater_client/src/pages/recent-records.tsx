@@ -107,10 +107,9 @@ export const RecentRecords: Component = () => {
             <For each={exerciseRecords[date] as any[]}>{(record: any, i) =>
               <>
                 <Show when={!record.data}>
+                  <p style={{ "margin-bottom": "0px", "margin-top": "4px", "font-size": "x-large", }}>{record.user_name} </p>
                   <Show when={record.type}>
                     <div style={{ "display": "flex", "margin-left": "8px", "height": "28px", "gap": "4px", "align-items": "baseline", "margin-bottom": "0px", "margin-top": "0px" }}>
-                      <p style={{ "margin-bottom": "0px", "margin-top": "4px", "font-size": "x-large", }}>{record.user_name} </p>
-                      <p style={{ "margin-bottom": "0px", "margin-top": "4px", "font-size": "larger" }}>did</p>
                       <p style={{ "margin-bottom": "0px", "margin-top": "4px", "font-size": "larger", "color": "mediumorchid" }}>{record.type == 'max' ? `${record.type} effort` : record.type == 'speed' ? `${record.type} day` : `just accessory work`}:</p>
                     </div>
                     <div style={{ "display": "flex", "margin-left": "8px", "gap": "4px", "align-items": "center" }}>
