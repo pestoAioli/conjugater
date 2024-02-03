@@ -47,6 +47,8 @@ export const RecentRecords: Component = () => {
               //@ts-ignore
               console.log(value[i].type, "ffff")
               //@ts-ignore
+              console.log(exerciseRecords[key][0].exercise, "ffff")
+              //@ts-ignore
               socket.push("find_history_of_main_exercise", { type: exerciseRecords[key][0].type, exercise: exerciseRecords[key][0].exercise })
             }
           }
