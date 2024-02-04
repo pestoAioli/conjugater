@@ -33,6 +33,7 @@ export const UserData: Component = () => {
 
     socket.on("found_workout_by_date", (payload: ExerciseRecords) => {
       setNumAccessory([0]);
+      setExerciseRecords([]);
       payload.exercise_records.map((record) => {
         setExerciseRecords((prev) => [...prev, record]);
         if (record.type == "speed" || record.type == "max") {
@@ -44,6 +45,7 @@ export const UserData: Component = () => {
       setWorkoutFound(true);
     })
     socket.on("found_history_of_main_exercise", (payload: ExerciseRecords) => {
+      setHist([]);
       console.log(payload)
       payload.exercise_records.map(record => {
         setHist(prev => [...prev, [new Date(record.date), record.weight]])
