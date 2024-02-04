@@ -47,7 +47,9 @@ export const RecentRecords: Component = () => {
               //@ts-ignore
               console.log(value[i].type, "ffff")
               //@ts-ignore
-              socket.push("find_history_of_main_exercise", { type: exerciseRecords[key][0].type, exercise: exerciseRecords[key][0].exercise })
+              console.log(exerciseRecords[key][i].exercise, "ffff")
+              //@ts-ignore
+              socket.push("find_history_of_main_exercise", { type: exerciseRecords[key][i].type, exercise: exerciseRecords[key][i].exercise })
             }
           }
         } else {
@@ -106,11 +108,12 @@ export const RecentRecords: Component = () => {
             <span style={{ "margin-left": "8px", "margin-bottom": "0px", "margin-top": "4px", "font-size": "large" }}>{date}</span>
             <For each={exerciseRecords[date] as any[]}>{(record: any, i) =>
               <>
+                <Show when={i() == 0}>
+                  <p style={{ "margin-left": "8px", "margin-bottom": "0px", "margin-top": "4px", "font-size": "x-large", }}>{record.user_name} </p>
+                </Show>
                 <Show when={!record.data}>
                   <Show when={record.type}>
                     <div style={{ "display": "flex", "margin-left": "8px", "height": "28px", "gap": "4px", "align-items": "baseline", "margin-bottom": "0px", "margin-top": "0px" }}>
-                      <p style={{ "margin-bottom": "0px", "margin-top": "4px", "font-size": "x-large", }}>{record.user_name} </p>
-                      <p style={{ "margin-bottom": "0px", "margin-top": "4px", "font-size": "larger" }}>did</p>
                       <p style={{ "margin-bottom": "0px", "margin-top": "4px", "font-size": "larger", "color": "mediumorchid" }}>{record.type == 'max' ? `${record.type} effort` : record.type == 'speed' ? `${record.type} day` : `just accessory work`}:</p>
                     </div>
                     <div style={{ "display": "flex", "margin-left": "8px", "gap": "4px", "align-items": "center" }}>

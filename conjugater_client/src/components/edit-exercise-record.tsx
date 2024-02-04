@@ -118,10 +118,9 @@ export const EditExerciseRecord: Component<
           })
           const result = await response.json();
           console.log(result, "result0000000000000000");
-          if (socket && result) {
-            socket.push("updated_exercise_record", {});
-          }
-
+        }
+        if (socket) {
+          socket.push("updated_exercise_record", {});
         }
         setAddingExercise(false);
       } catch (e) {

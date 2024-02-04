@@ -32,6 +32,7 @@ export const UserData: Component = () => {
     })
 
     socket.on("found_workout_by_date", (payload: ExerciseRecords) => {
+      setNumAccessory([0]);
       payload.exercise_records.map((record) => {
         setExerciseRecords((prev) => [...prev, record]);
         if (record.type == "speed" || record.type == "max") {
