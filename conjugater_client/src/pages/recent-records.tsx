@@ -7,13 +7,10 @@ import { LineChart } from "../components/line-chart";
 
 export const RecentRecords: Component = () => {
   const [_token, _setToken] = useAuth();
-  const socket = useSocket();
-  const [date, _setDate] = createSignal(moment().format('LL'));
+  const socket = useSocket(); const [date, _setDate] = createSignal(moment().format('LL'));
   const [loading, setLoading] = createSignal(true);
   const [exerciseRecords, setExerciseRecords] = createStore<{ [key: string]: object }>();
-  const [historyOfMain, setHistoryOfMain] = createStore<{ [key: string]: object }>();
   const [dates, setDates] = createSignal<string[]>([]);
-  const [width, setWidth] = createSignal();
   const [ready, setReady] = createSignal(false);
 
   if (socket) {
@@ -109,28 +106,29 @@ export const RecentRecords: Component = () => {
             <For each={exerciseRecords[date] as any[]}>{(record: any, i) =>
               <>
                 <Show when={i() == 0}>
-                  <p style={{ "margin-left": "8px", "margin-bottom": "0px", "margin-top": "4px", "font-size": "x-large", }}>{record.user_name} </p>
+                  <p style={{ "margin-left": "8px", "margin-bottom": "0px", "margin-top": "4px", "font-size": "xx-large", }}>{record.user_name} </p>
                 </Show>
                 <Show when={!record.data}>
                   <Show when={record.type}>
                     <div style={{ "display": "flex", "margin-left": "8px", "height": "28px", "gap": "4px", "align-items": "baseline", "margin-bottom": "0px", "margin-top": "0px" }}>
-                      <p style={{ "margin-bottom": "0px", "margin-top": "4px", "font-size": "larger", "color": "mediumorchid" }}>{record.type == 'max' ? `${record.type} effort` : record.type == 'speed' ? `${record.type} day` : `just accessory work`}:</p>
+                      <p style={{ "margin-bottom": "0px", "margin-top": "4px", "font-size": "x-large", "color": "mediumorchid" }}>{record.type == 'max' ? `${record.type} effort` : record.type == 'speed' ? `${record.type} day` : `just accessory work`}:</p>
                     </div>
-                    <div style={{ "display": "flex", "margin-left": "8px", "gap": "4px", "align-items": "center" }}>
+                    <div style={{ "display": "flex", "margin-left": "8px", "gap": "4px", "align-items": "center", "font-size": "x-large" }}>
                       <p style={{ "color": "mediumorchid" }}>{record.exercise}</p>
                       <p> @ {record.weight} lbs</p>
                     </div>
                   </Show>
                   <Show when={!record.type}>
-                    <div style={{ "display": "flex", "align-items": "baseline" }}>
-                      <p style={{ "margin-bottom": "0px", "margin-left": "8px", "font-size": "large", "color": "mediumslateblue" }}>{record.exercise}</p>
-                      <p style={{ "margin-bottom": "0px", "margin-left": "8px" }}>{record.sets} sets</p>
-                      <p style={{ "margin-bottom": "0px", "margin-left": "8px" }}>@ {record.weight} lbs</p>
+                    <div style={{ "display": "flex", "flex-direction": "column" }}>
+                      <p style={{ "margin-bottom": "0px", "margin-left": "8px", "font-size": "x-large", "color": "mediumslateblue" }}>{record.exercise}</p>
+                      <div style={{ "display": "flex", "align-items": "baseline", "font-size": "x-large" }}>
+                        <p style={{ "margin-bottom": "0px", "margin-left": "8px" }}>{record.sets} sets</p>
+                        <p style={{ "margin-bottom": "0px", "margin-left": "8px" }}>@ {record.weight} lbs</p>
+                      </div>
                     </div>
                   </Show>
                   <Show when={record.notes}>
-                    <p style={{ "margin-left": "8px", "margin-bottom": "0px", "margin-top": "0px" }}>{record.user_name}'s notes:</p>
-                    <p style={{ "margin-left": "8px" }}>{record.notes}</p>
+                    <p style={{ "margin-left": "8px", "margin-top": record.type ? "0px" : "12px", "font-size": "larger" }}>{record.notes}</p>
                   </Show>
                 </Show>
                 <Show when={record.data}>

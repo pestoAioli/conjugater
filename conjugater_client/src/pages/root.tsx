@@ -11,7 +11,7 @@ export const Root = () => {
   return (
     <SocketContextProvider>
       <div style={{ "height": "30px", "display": "flex", "justify-content": "space-between", "align-items": "center" }}>
-        <h1 style={{ "margin-left": "8px" }}>conjugater</h1>
+        <A style={{ "text-decoration": "none", "color": "black" }} href='/home'><h1 style={{ "margin-left": "8px" }}>conjugater</h1></A>
         <div style={{ "display": "flex", "justify-content": "space-between", "align-items": "center", "gap": "8px" }}>
           <A href='/home' style={{ "color": "peru" }}>home</A>
           <Show when={token()}>
